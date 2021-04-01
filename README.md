@@ -52,11 +52,10 @@ docker-compose down -v
 To evaluate the correctness of each policy, scenarios were created where we change the values on PIP database.
 
 [TODO]
-```
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## [License](LICENSE)
+#### [License](LICENSE)
