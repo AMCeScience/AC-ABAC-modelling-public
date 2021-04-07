@@ -9,13 +9,13 @@ The policies/ folder contains the rules and policies in XACML that were designed
 Disabling a policy.
 
 ```bash
-cp policy.xml policy.xml--OFF
+mv policy.xml policy.xml--OFF
 ```
 
 Enabling a policy.
 
 ```bash
-cp policy.xml--OFF policy.xml
+mv policy.xml--OFF policy.xml
 ```
 
 ## Docker usage
