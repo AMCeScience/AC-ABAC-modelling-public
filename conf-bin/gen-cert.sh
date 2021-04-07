@@ -1,0 +1,57 @@
+#!/bin/sh
+
+SERVICE_NAME=$1
+KEYSTORE_PASSWORD=$2
+KEY_ALIAS=${SERVICE_NAME}
+KEY_ALG=RSA
+KEY_SIZE=2048
+DNAME="CN=$SERVICE_NAME,OU=Information Management Unit (IMU),O=Institute of Communication and Computer Systems (ICCS),L=Athens,ST=Attika,C=GR"
+SAN="dns:$SERVICE_NAME,dns:localhost,ip:127.0.0.1"
+VALIDITY=3650
+BASEDIR=/mnt/certs
+SERVICEDIR=$BASEDIR/$SERVICE_NAME
+CERTIFICATE_FILE=$SERVICEDIR/$SERVICE_NAME.crt
+KEYSTORE_FILE=$SERVICEDIR/$SERVICE_NAME-keystore.p12
+KEYSTORE_PASS=${KEYSTORE_PASSWORD}
+KEYSTORE_TYPE=PKCS12
+TRUSTSTORE_FILE=$SERVICEDIR/$SERVICE_NAME-truststore.p12
+TRUSTSTORE_PASS=${KEYSTORE_PASSWORD}
+TRUSTSTORE_TYPE=PKCS12
+COMMON_TRUSTSTORE_FILE=$BASEDIR/common/common-truststore.p12
+COMMON_TRUSTSTORE_PASS=$3
+COMMON_TRUSTSTORE_TYPE=PKCS12
+
+#echo SERVICE_NAME: $SERVICE_NAME
+#echo KEYSTORE_PASSWORD: $KEYSTORE_PASSWORD
+#echo KEY_ALIAS: $KEY_ALIAS
+#echo KEY_ALG: $KEY_ALG
+#echo KEY_SIZE: $KEY_SIZE
+#echo DNAME: $DNAME
+#echo SAN: $SAN
+#echo VALIDITY: $VALIDITY
+#echo BASEDIR: $BASEDIR
+#echo CERTIFICATE_FILE: $CERTIFICATE_FILE
+#echo KEYSTORE_FILE: $KEYSTORE_FILE
+#echo KEYSTORE_PASS: $KEYSTORE_PASS
+#echo KEYSTORE_TYPE: $KEYSTORE_TYPE
+#echo TRUSTSTORE_FILE: $TRUSTSTORE_FILE
+#echo TRUSTSTORE_PASS: $TRUSTSTORE_PASS
+#echo TRUSTSTORE_TYPE: $TRUSTSTORE_TYPE
+#echo COMMON_TRUSTSTORE_FILE: $COMMON_TRUSTSTORE_FILE
+#echo COMMON_TRUSTSTORE_PASS: $COMMON_TRUSTSTORE_PASS
+#echo COMMON_TRUSTSTORE_TYPE: $COMMON_TRUSTSTORE_TYPE
+
+echo "--------------------------------------------------------"
+echo "Generating $SERVICE_NAME Keystore..."
+mkdir -p $SERVICEDIR
+rm -rf $SERVICEDIR/*
+keytool -genkey -alias $KEY_ALIAS -keyalg $KEY_ALG -keysize $KEY_SIZE -storetype $KEYSTORE_TYPE -storepass $KEYSTORE_PASS -dname "$DNAME" -ext "SAN=$SAN" -keystore $KEYSTORE_FILE -startdate -1d -validity $VALIDITY
+echo "Exporting $SERVICE_NAME Certificate..."
+keytool -export -storetype PKCS12 -keystore $KEYSTORE_FILE -storepass $KEYSTORE_PASS -alias $KEY_ALIAS -file $CERTIFICATE_FILE
+echo "Generating $SERVICE_NAME Truststore..."
+keytool -importcert -alias $KEY_ALIAS -file $CERTIFICATE_FILE -storetype $TRUSTSTORE_TYPE -keystore $TRUSTSTORE_FILE -storepass $TRUSTSTORE_PASS -noprompt
+echo "Appending $SERVICE_NAME to Common Truststore..."
+keytool -importcert -alias $KEY_ALIAS -file $CERTIFICATE_FILE -storetype $COMMON_TRUSTSTORE_TYPE -keystore $COMMON_TRUSTSTORE_FILE -storepass $COMMON_TRUSTSTORE_PASS -noprompt
+touch $SERVICEDIR/.ready
+echo "done"
+echo "--------------------------------------------------------"

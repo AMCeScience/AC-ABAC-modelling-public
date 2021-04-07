@@ -1,0 +1,1 @@
+((Get-Content -Path ".env" -Raw) -replace "\S*EXTERNAL_IP\s*=.*", ("EXTERNAL_IP="+(Get-NetIPAddress -InterfaceAlias "vEthernet (WSL)" -AddressFamily IPv4 | Select-Object -ExpandProperty IPAddress))).Trim() | Set-Content -Path ".env"

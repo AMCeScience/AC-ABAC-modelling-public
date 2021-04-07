@@ -1,0 +1,1 @@
+((Get-Content -Path ".env" -Raw) -replace "\S*EXTERNAL_IP\s*=.*", ("EXTERNAL_IP="+((Invoke-WebRequest ifconfig.co/ip).Content.Trim()))).Trim() | Set-Content -Path ".env"

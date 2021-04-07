@@ -1,0 +1,1 @@
+powershell -Command .\setenv-wsl.ps1

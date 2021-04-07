@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2017-2020 Institute of Communication and Computer Systems (imu.iccs.gr)
+    Department of Epidemiology and Data Science (https://www.ebioscience.amc.nl), 
+    Amsterdam University Medical Centers - University of Amsterdam, Amsterdam, Netherlands
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public License, v2.0.
+  ~ If a copy of the MPL was not distributed with this file, You can obtain one at
+  ~ https://www.mozilla.org/en-US/MPL/2.0/
+  -->
+<xacml3:Policy 
+    xmlns:xacml3="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" 
+    PolicyId="c4a8462d-f90b-41f5-a1a5-e1d3bba39f7d" 
+    RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-unless-deny"
+    Version="1.0">
+
+    <xacml3:Description><![CDATA[
+            Policy Id:   c4a8462d-f90b-41f5-a1a5-e1d3bba39f7d
+            Policy Name: Read-AC-ABAC-policy
+
+    ]]></xacml3:Description>
+
+    <xacml3:Target>
+      <AnyOf>
+         <AllOf>        
+            <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">/rest/acute-care-demo/call-centre/read</AttributeValue>
+               <AttributeDesignator AttributeId="http-req-url" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            </Match>
+            <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GET</AttributeValue>
+               <AttributeDesignator AttributeId="http-req-method" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            </Match>
+         </AllOf>
+
+         <AllOf>        
+            <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">/rest/acute-care-demo/ambulance/read</AttributeValue>
+               <AttributeDesignator AttributeId="http-req-url" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            </Match>
+            <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GET</AttributeValue>
+               <AttributeDesignator AttributeId="http-req-method" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            </Match>
+         </AllOf>
+
+         <AllOf>        
+            <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">/rest/acute-care-demo/hospital/read</AttributeValue>
+               <AttributeDesignator AttributeId="http-req-url" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            </Match>
+            <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GET</AttributeValue>
+               <AttributeDesignator AttributeId="http-req-method" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            </Match>
+         </AllOf>
+
+         <AllOf>        
+            <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">/php</AttributeValue>
+               <AttributeDesignator AttributeId="http-req-url" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            </Match>
+            <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GET</AttributeValue>
+               <AttributeDesignator AttributeId="http-req-method" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            </Match>
+         </AllOf>
+      </AnyOf>
+   </xacml3:Target>
+
+    <!-- Rule Name: Rule - Base URL -->
+    <xacml3:Rule Effect="Permit" RuleId="3d217d0e-26c3-4848-8711-bb03b3e22e79">
+        <xacml3:Condition>
+            <!-- COMPOSITE EXPRESSION - START:  operator: NOT AND -->
+            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+                    <!-- SIMPLE EXPRESSION - START:  attribute=Request, property=url, operator=STARTS_WITH_CI, value=/php -->
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:3.0:function:string-starts-with">
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-normalize-to-lower-case">
+                            <xacml3:AttributeValue
+                                DataType="http://www.w3.org/2001/XMLSchema#string">/rest</xacml3:AttributeValue>
+                        </xacml3:Apply>
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-normalize-to-lower-case">
+                            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+                                <xacml3:AttributeDesignator
+                                    AttributeId="http-req-url"
+                                    Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                    DataType="http://www.w3.org/2001/XMLSchema#string"
+                                    MustBePresent="true"
+                                />
+                            </xacml3:Apply>
+                        </xacml3:Apply>
+                    </xacml3:Apply>
+                    <!-- SIMPLE EXPRESSION - END -->
+                </xacml3:Apply>
+            </xacml3:Apply>
+            <!-- COMPOSITE EXPRESSION - END:  operator: NOT AND -->
+        </xacml3:Condition>
+        <!-- Rule Obligations -->
+        <xacml3:ObligationExpressions>
+            <ObligationExpression ObligationId="TrackingObligation:c4a8462d-f90b-41f5-a1a5-e1d3bba39f7d:3d217d0e-26c3-4848-8711-bb03b3e22e79:permit" FulfillOn="Permit">
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:decision">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PERMIT</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:type">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:id">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">3d217d0e-26c3-4848-8711-bb03b3e22e79</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:name">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule - Base URL</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:parent">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Read-AC-ABAC-policy</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+            </ObligationExpression>
+        </xacml3:ObligationExpressions>
+    </xacml3:Rule>
+
+    <!-- Rule Name: Rule - HTTP method -->
+    <xacml3:Rule Effect="Deny" RuleId="2d8b99fd-a422-4c4f-a800-e5d8c4b6078f">
+        <xacml3:Condition>
+            <!-- COMPOSITE EXPRESSION - START:  operator: AND -->
+            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+                <!-- SIMPLE EXPRESSION - START:  attribute=Request, property=httpMethod, operator=NOT_EQUALS_CI, value=GET -->
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:3.0:function:string-equal-ignore-case">
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+                            <xacml3:AttributeDesignator
+                                AttributeId="http-req-method"
+                                Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                DataType="http://www.w3.org/2001/XMLSchema#string"
+                                MustBePresent="true"
+                            />
+                        </xacml3:Apply>
+                        <xacml3:AttributeValue
+                            DataType="http://www.w3.org/2001/XMLSchema#string">GET</xacml3:AttributeValue>
+                    </xacml3:Apply>
+                </xacml3:Apply>
+                <!-- SIMPLE EXPRESSION - END -->
+            </xacml3:Apply>
+            <!-- COMPOSITE EXPRESSION - END:  operator: AND -->
+        </xacml3:Condition>
+        <!-- Rule Obligations -->
+        <xacml3:ObligationExpressions>
+            <ObligationExpression ObligationId="TrackingObligation:c4a8462d-f90b-41f5-a1a5-e1d3bba39f7d:2d8b99fd-a422-4c4f-a800-e5d8c4b6078f:deny" FulfillOn="Deny">
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:decision">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">DENY</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:type">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:id">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">2d8b99fd-a422-4c4f-a800-e5d8c4b6078f</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:name">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule - HTTP method</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:parent">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Read-AC-ABAC-policy</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+            </ObligationExpression>
+        </xacml3:ObligationExpressions>
+    </xacml3:Rule>
+
+    <!-- Rule Name: Rule 1 - Current Time after Shift Start -->
+    <xacml3:Rule Effect="Deny" RuleId="31aa3bfa-c095-4f10-a6c7-a9d759a8e54b">
+        <xacml3:Condition>
+            <!-- COMPOSITE EXPRESSION - START:  operator: AND -->
+            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
+                    <!-- SIMPLE EXPRESSION - START:  manually created -->
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal">
+                        <!-- Current Date/Time -->
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
+                            <xacml3:AttributeDesignator
+                                    AttributeId="urn:oasis:names:tc:xacml:1.0:environment:current-dateTime"
+                                    Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                    DataType="http://www.w3.org/2001/XMLSchema#dateTime"
+                                    MustBePresent="true"
+                            />
+                        </xacml3:Apply>
+                        <!-- timestamp-shift-start -->
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
+                            <xacml3:AttributeDesignator
+                                AttributeId="timestamp-shift-start"
+                                Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                DataType="http://www.w3.org/2001/XMLSchema#dateTime"
+                                MustBePresent="true"
+                            />
+                        </xacml3:Apply>
+                    </xacml3:Apply>
+                </xacml3:Apply>
+                <!-- SIMPLE EXPRESSION - END -->
+            </xacml3:Apply>
+            <!-- COMPOSITE EXPRESSION - END:  operator: AND -->
+        </xacml3:Condition>
+        <!-- Rule Obligations -->
+        <xacml3:ObligationExpressions>
+            <ObligationExpression ObligationId="TrackingObligation:c4a8462d-f90b-41f5-a1a5-e1d3bba39f7d:31aa3bfa-c095-4f10-a6c7-a9d759a8e54b:deny" FulfillOn="Deny">
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:decision">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">DENY</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:type">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:id">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">31aa3bfa-c095-4f10-a6c7-a9d759a8e54b</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:name">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule 1 - Current Time after Shift Start</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:parent">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Read-AC-ABAC-policy</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+            </ObligationExpression>
+        </xacml3:ObligationExpressions>
+    </xacml3:Rule>
+
+    <!-- Rule Name: Rule 1 - Current Time before Shift end -->
+    <xacml3:Rule Effect="Deny" RuleId="b90c11d7-db11-4fad-aaae-8c841010ad99">
+        <xacml3:Condition>
+            <!-- COMPOSITE EXPRESSION - START:  operator: AND -->
+            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
+                    <!-- SIMPLE EXPRESSION - START:  manually created -->
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal">
+                        <!-- Current Date/Time -->
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
+                            <xacml3:AttributeDesignator
+                                    AttributeId="urn:oasis:names:tc:xacml:1.0:environment:current-dateTime"
+                                    Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                    DataType="http://www.w3.org/2001/XMLSchema#dateTime"
+                                    MustBePresent="true"
+                            />
+                        </xacml3:Apply>
+                        <!-- timestamp-shift-start -->
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
+                            <xacml3:AttributeDesignator
+                                AttributeId="timestamp-shift-end"
+                                Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                DataType="http://www.w3.org/2001/XMLSchema#dateTime"
+                                MustBePresent="true"
+                            />
+                        </xacml3:Apply>
+                    </xacml3:Apply>
+                    <!-- SIMPLE EXPRESSION - END -->
+                </xacml3:Apply>
+            </xacml3:Apply>
+            <!-- COMPOSITE EXPRESSION - END:  operator: AND -->
+        </xacml3:Condition>
+        <!-- Rule Obligations -->
+        <xacml3:ObligationExpressions>
+            <ObligationExpression ObligationId="TrackingObligation:c4a8462d-f90b-41f5-a1a5-e1d3bba39f7d:b90c11d7-db11-4fad-aaae-8c841010ad99:deny" FulfillOn="Deny">
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:decision">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">DENY</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:type">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:id">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">b90c11d7-db11-4fad-aaae-8c841010ad99</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:name">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule 1 - Current Time before Shift end</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:parent">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Read-AC-ABAC-policy</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+            </ObligationExpression>
+        </xacml3:ObligationExpressions>
+    </xacml3:Rule>
+
+    <!-- Rule Name: Rule 2 - User belongs to a Team -->
+    <xacml3:Rule Effect="Deny" RuleId="user-belongs-to-team">
+        <xacml3:Condition>
+            <!-- COMPOSITE EXPRESSION - START:  operator: AND -->
+            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+                <!-- SIMPLE EXPRESSION - START:  attribute=Request, property=crew-id, operator=NOT EQUALS, value=ATTRIBUTE(crew-assigned-to-call) -->
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+                            <xacml3:AttributeDesignator
+                                    AttributeId="team-id"
+                                    Category="urn:eu:asclepios-project:casm:1.0"
+                                    DataType="http://www.w3.org/2001/XMLSchema#string"
+                                    MustBePresent="true"
+                            />
+                        </xacml3:Apply>                        
+                        <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string"></xacml3:AttributeValue>                      
+                    </xacml3:Apply>
+                <!-- SIMPLE EXPRESSION - END -->
+            </xacml3:Apply>
+            <!-- COMPOSITE EXPRESSION - END:  operator: AND -->
+        </xacml3:Condition>
+        <!-- Rule Obligations -->
+        <xacml3:ObligationExpressions>
+            <ObligationExpression ObligationId="TrackingObligation:user-belongs-to-team:deny" FulfillOn="Deny">
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:decision">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">DENY</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:type">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:id">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">user-belongs-to-team</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:name">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule 2 - User belongs to a Team</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:parent">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Read-AC-ABAC-policy</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+            </ObligationExpression>
+        </xacml3:ObligationExpressions>
+    </xacml3:Rule>
+
+    <!-- Rule Name: Rule 3 - Patient under active emergency -->
+    <xacml3:Rule Effect="Deny" RuleId="patient-under-active-emergency">
+        <xacml3:Condition>
+            <!-- COMPOSITE EXPRESSION - START:  operator: AND -->
+            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+                <!-- SIMPLE EXPRESSION - START:  attribute=Request, property=crew-id, operator=NOT EQUALS, value=ATTRIBUTE(crew-assigned-to-call) -->
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+                            <xacml3:AttributeDesignator
+                                    AttributeId="under-emergency"
+                                    Category="urn:eu:asclepios-project:casm:1.0"
+                                    DataType="http://www.w3.org/2001/XMLSchema#string"
+                                    MustBePresent="true"
+                            />
+                        </xacml3:Apply>
+                        <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">1</xacml3:AttributeValue>
+                        
+                    </xacml3:Apply>
+                </xacml3:Apply>
+                <!-- SIMPLE EXPRESSION - END -->
+            </xacml3:Apply>
+            <!-- COMPOSITE EXPRESSION - END:  operator: AND -->
+        </xacml3:Condition>
+        <!-- Rule Obligations -->
+        <xacml3:ObligationExpressions>
+            <ObligationExpression ObligationId="TrackingObligation:patient-under-active-emergency:deny" FulfillOn="Deny">
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:decision">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">DENY</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:type">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:id">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">patient-under-active-emergency</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:name">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule 3 - Patient under active emergency</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:parent">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Read-AC-ABAC-policy</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+            </ObligationExpression>
+        </xacml3:ObligationExpressions>
+    </xacml3:Rule>
+
+    <!-- Rule Name: Rule 3 - Team under active emergency teams -->
+    <xacml3:Rule Effect="Deny" RuleId="team-under-emergency-active-teams">
+        <xacml3:Condition>
+            <!-- COMPOSITE EXPRESSION - START:  operator: AND -->
+            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+                <!-- SIMPLE EXPRESSION - START:  attribute=Request, property=crew-id, operator=NOT EQUALS, value=ATTRIBUTE(crew-assigned-to-call) -->
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+                            <xacml3:AttributeDesignator
+                                    AttributeId="team-id"
+                                    Category="urn:eu:asclepios-project:casm:1.0"
+                                    DataType="http://www.w3.org/2001/XMLSchema#string"
+                                    MustBePresent="true"
+                            />
+                        </xacml3:Apply>
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+                            <xacml3:AttributeDesignator
+                                    AttributeId="active-emergency-team-id"
+                                    Category="urn:eu:asclepios-project:casm:1.0"
+                                    DataType="http://www.w3.org/2001/XMLSchema#string"
+                                    MustBePresent="true"
+                            />
+                        </xacml3:Apply>
+                    </xacml3:Apply>
+                </xacml3:Apply>
+                <!-- SIMPLE EXPRESSION - END -->
+            </xacml3:Apply>
+            <!-- COMPOSITE EXPRESSION - END:  operator: AND -->
+        </xacml3:Condition>
+        <!-- Rule Obligations -->
+        <xacml3:ObligationExpressions>
+            <ObligationExpression ObligationId="TrackingObligation:team-under-emergency-active-teams:deny" FulfillOn="Deny">
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:decision">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">DENY</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:type">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:id">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">team-under-emergency-active-teams</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:name">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule 3 - Team under active emergency teams</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:parent">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Read-AC-ABAC-policy</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+            </ObligationExpression>
+        </xacml3:ObligationExpressions>
+    </xacml3:Rule>
+
+
+    <!-- Rule Name: Rule 4 - Current Time greater than or equal Time Invite -->
+    <xacml3:Rule Effect="Deny" RuleId="4409f2ae-868e-4ec6-8731-d937cd76db2c">
+        <xacml3:Condition>
+            <!-- COMPOSITE EXPRESSION - START:  operator: AND -->
+            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
+                    <!-- SIMPLE EXPRESSION - START:  manually created -->
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal">
+                        <!-- Current Date/Time -->
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
+                            <xacml3:AttributeDesignator
+                                    AttributeId="urn:oasis:names:tc:xacml:1.0:environment:current-dateTime"
+                                    Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                    DataType="http://www.w3.org/2001/XMLSchema#dateTime"
+                                    MustBePresent="true"
+                            />
+                        </xacml3:Apply>
+                        <!-- timestamp-shift-start -->
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
+                            <xacml3:AttributeDesignator
+                                AttributeId="timestamp-invite"
+                                Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                DataType="http://www.w3.org/2001/XMLSchema#dateTime"
+                                MustBePresent="true"
+                            />
+                        </xacml3:Apply>
+                    </xacml3:Apply>
+                    <!-- SIMPLE EXPRESSION - END -->
+                </xacml3:Apply>
+            </xacml3:Apply>
+            <!-- COMPOSITE EXPRESSION - END:  operator: AND -->
+        </xacml3:Condition>
+        <!-- Rule Obligations -->
+        <xacml3:ObligationExpressions>
+            <ObligationExpression ObligationId="TrackingObligation:c4a8462d-f90b-41f5-a1a5-e1d3bba39f7d:4409f2ae-868e-4ec6-8731-d937cd76db2c:deny" FulfillOn="Deny">
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:decision">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">DENY</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:type">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:id">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">4409f2ae-868e-4ec6-8731-d937cd76db2c</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:name">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule 4 - Current Time greater than or equal Time Invite</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:parent">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Read-AC-ABAC-policy</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+            </ObligationExpression>
+        </xacml3:ObligationExpressions>
+    </xacml3:Rule>
+
+    <!-- Rule Name: Rule 5 - Current Time less than or equal Time Revoke -->
+    <xacml3:Rule Effect="Deny" RuleId="c59c1eaf-330d-4a92-a48f-8fcfc0d3b192">
+        <xacml3:Condition>
+            <!-- COMPOSITE EXPRESSION - START:  operator: AND -->
+            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
+                    <!-- SIMPLE EXPRESSION - START:  manually created -->
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal">
+                        <!-- Current Date/Time -->
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
+                            <xacml3:AttributeDesignator
+                                    AttributeId="urn:oasis:names:tc:xacml:1.0:environment:current-dateTime"
+                                    Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                    DataType="http://www.w3.org/2001/XMLSchema#dateTime"
+                                    MustBePresent="true"
+                            />
+                        </xacml3:Apply>
+                        <!-- timestamp-shift-start -->
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
+                            <xacml3:AttributeDesignator
+                                AttributeId="timestamp-revoke"
+                                Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                DataType="http://www.w3.org/2001/XMLSchema#dateTime"
+                                MustBePresent="true"
+                            />
+                        </xacml3:Apply>
+                    </xacml3:Apply>
+                    <!-- SIMPLE EXPRESSION - END -->
+                </xacml3:Apply>
+            </xacml3:Apply>
+            <!-- COMPOSITE EXPRESSION - END:  operator: AND -->
+        </xacml3:Condition>
+        <!-- Rule Obligations -->
+        <xacml3:ObligationExpressions>
+            <ObligationExpression ObligationId="TrackingObligation:c4a8462d-f90b-41f5-a1a5-e1d3bba39f7d:c59c1eaf-330d-4a92-a48f-8fcfc0d3b192:deny" FulfillOn="Deny">
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:decision">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">DENY</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:type">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:id">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">c59c1eaf-330d-4a92-a48f-8fcfc0d3b192</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:name">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule 5 - Current Time less than or equal Time Revoke</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:parent">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Read-AC-ABAC-policy</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+            </ObligationExpression>
+        </xacml3:ObligationExpressions>
+    </xacml3:Rule>
+
+
+    <!-- Policy Obligations -->
+    <xacml3:ObligationExpressions>
+        <ObligationExpression ObligationId="TrackingObligation:c4a8462d-f90b-41f5-a1a5-e1d3bba39f7d:permit" FulfillOn="Permit">
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:decision">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PERMIT</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:type">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Policy</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:id">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">c4a8462d-f90b-41f5-a1a5-e1d3bba39f7d</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:name">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Read-AC-ABAC-policy</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+        </ObligationExpression>
+        <ObligationExpression ObligationId="TrackingObligation:c4a8462d-f90b-41f5-a1a5-e1d3bba39f7d:deny" FulfillOn="Deny">
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:decision">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">DENY</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:type">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Policy</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:id">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">c4a8462d-f90b-41f5-a1a5-e1d3bba39f7d</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:name">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Read-AC-ABAC-policy</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+        </ObligationExpression>
+    </xacml3:ObligationExpressions>
+</xacml3:Policy>

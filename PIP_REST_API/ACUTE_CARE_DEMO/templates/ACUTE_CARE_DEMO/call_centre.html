@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Call centre healthcare professional page!</h1>
+
+{% if encounter is None %}
+	<button type="button" onclick="alert('Hello world!')">Start emergency session</button>
+{% endif %}
+
+<button type="button" onclick="location.href='/rest/acute-care-demo/call-centre/read?ES-ID=10&format=json&patient-ID=100&user-ID=10'">Read EMR</button>
+
+<form action="" method="post">
+	{% csrf_token %}
+    <input type="submit" name="upload" value="upload" />	
+</form>
+ 
+{% if EMR_response %}
+	<h1>{{ EMR }}</h1>
+{% endif %}
+
+</body>
+</html>

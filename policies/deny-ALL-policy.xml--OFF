@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2017-2020 Institute of Communication and Computer Systems (imu.iccs.gr)
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public License, v2.0.
+  ~ If a copy of the MPL was not distributed with this file, You can obtain one at
+  ~ https://www.mozilla.org/en-US/MPL/2.0/
+  -->
+<xacml3:Policy xmlns:xacml3="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+  PolicyId="Deny_ALL_policy"
+  RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable" 
+  Version="1.0">
+	<xacml3:Description>Deny ALL Policy</xacml3:Description>
+	<xacml3:Target>
+	</xacml3:Target>
+	<xacml3:Rule Effect="Deny" RuleId="Deny-Rule"/>
+
+	<!-- Policy Obligations -->
+	<xacml3:ObligationExpressions>
+		<ObligationExpression ObligationId="TrackingObligation:Deny_ALL_policy:permit" FulfillOn="Permit">
+			<AttributeAssignmentExpression AttributeId="asclepios:obligation:decision">
+				<xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PERMIT</xacml3:AttributeValue>
+			</AttributeAssignmentExpression>
+			<AttributeAssignmentExpression AttributeId="asclepios:obligation:type">
+				<xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Policy</xacml3:AttributeValue>
+			</AttributeAssignmentExpression>
+			<AttributeAssignmentExpression AttributeId="asclepios:obligation:id">
+				<xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Deny_ALL_policy</xacml3:AttributeValue>
+			</AttributeAssignmentExpression>
+			<AttributeAssignmentExpression AttributeId="asclepios:obligation:name">
+				<xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Deny_ALL_policy</xacml3:AttributeValue>
+			</AttributeAssignmentExpression>
+		</ObligationExpression>
+		<ObligationExpression ObligationId="TrackingObligation:Deny_ALL_policy:deny" FulfillOn="Deny">
+			<AttributeAssignmentExpression AttributeId="asclepios:obligation:decision">
+				<xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">DENY</xacml3:AttributeValue>
+			</AttributeAssignmentExpression>
+			<AttributeAssignmentExpression AttributeId="asclepios:obligation:type">
+				<xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Policy</xacml3:AttributeValue>
+			</AttributeAssignmentExpression>
+			<AttributeAssignmentExpression AttributeId="asclepios:obligation:id">
+				<xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Deny_ALL_policy</xacml3:AttributeValue>
+			</AttributeAssignmentExpression>
+			<AttributeAssignmentExpression AttributeId="asclepios:obligation:name">
+				<xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Deny_ALL_policy</xacml3:AttributeValue>
+			</AttributeAssignmentExpression>
+		</ObligationExpression>
+	</xacml3:ObligationExpressions>
+</xacml3:Policy>

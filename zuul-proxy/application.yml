@@ -1,0 +1,61 @@
+#
+# Copyright (C) 2017-2020 Institute of Communication and Computer Systems (imu.iccs.gr)
+#
+# This Source Code Form is subject to the terms of the Mozilla Public License, v2.0.
+# If a copy of the MPL was not distributed with this file, You can obtain one at
+# https://www.mozilla.org/en-US/MPL/2.0/
+#
+
+server:
+  port: 80
+
+proxy.rewrite.redirect_url: true
+
+zuul:
+  addHostHeader: true
+  routes:
+    webapp:
+      path: /webapp/**
+      url: ${WEBAPP_BASE_URL}
+      sensitiveHeaders:
+    simpleclientapp:
+      path: /simple/**
+      url: ${SIMPLECLIENTAPP_BASE_URL}
+      sensitiveHeaders:
+    django:
+      path: /**
+      url: ${DJANGOAPP_BASE_URL}
+      sensitiveHeaders:
+    phpapp:
+      path: /php/**
+      url: ${PHPAPP_BASE_URL}
+      sensitiveHeaders:
+    django-rest:
+      path: /rest/**
+      url: ${DJANGO_REST_BASE_URL}
+      sensitiveHeaders:
+
+ribbon:
+  eureka:
+    enabled: false
+
+# Keycloak client
+keycloak:
+  enabled: ${KEYCLOAK_ENABLED}
+  #ssl-required: none
+  auth-server-url: ${KEYCLOAK_URL}
+  realm: ${KEYCLOAK_REALM}
+  resource: ${KEYCLOAK_RESOURCE}
+  public-client: true
+  #confidential-port: 443
+  #cors: true
+  security-constraints:
+    - authRoles:
+        - admin
+      securityCollections:
+        - name: something
+          patterns:
+            - /*
+          methods:
+            - GET
+            - POST

@@ -34,12 +34,8 @@ docker-compose build
 docker-compose up
 ```
 
-3 - The default is scenario 1 where every READ(GET) request is permitted. You should be able now to access django default page in http://IP_EXTERNAL/.
+3 - The default is scenario 1 where every READ(GET) request is permitted. You should be able now to access django default page in http://IP_EXTERNAL/rest/acute-care-demo/call-centre. Login with username 'user1' and password 'user1'.
 
-```bash
-docker-compose build
-docker-compose up
-```
 
 4 - Stop docker after tests
 
@@ -51,7 +47,7 @@ docker-compose down -v
 
 To evaluate the correctness of each policy, scenarios were created where we change the values on PIP database.
 
-[TODO]
+[TODO Description]
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

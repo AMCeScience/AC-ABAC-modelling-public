@@ -1,0 +1,8 @@
+pillow==8.1.0
+setuptools
+phonenumbers
+Django==2.2.1
+python-keycloak==0.24.0
+datapunt-keycloak-oidc==0.5
+mozilla-django-oidc==1.2.4
+django-rest-framework

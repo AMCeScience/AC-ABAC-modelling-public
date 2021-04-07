@@ -1,0 +1,15 @@
+
+docker cp keycloak-export.sh keycloak:/tmp/keycloak-export.sh
+docker exec -it keycloak bash
+cd /tmp
+./keycloak-export.sh
+exit
+docker cp keycloak:/tmp/realms-export-single-file.json .
+docker cp keycloak:/tmp/standalone.sh.log .
+
+
+docker exec -it mysql bash
+cd /tmp
+mysqldump -u root -p keycloak > keycloak.dump
+exit
+docker cp mysql:/tmp/keycloak.dump .
