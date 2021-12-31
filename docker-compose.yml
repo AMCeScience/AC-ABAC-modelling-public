@@ -108,7 +108,7 @@ services:
       - app_network
 
   pdp-server:
-    image: registry.gitlab.com/asclepios-project/abac-authorization/abac-server:latest
+    image: registry.gitlab.com/asclepios-project/abac-authorization/abac-server:3.0.4
     container_name: pdp-server
     depends_on:
       conf:
@@ -147,7 +147,7 @@ services:
     volumes:
       - certs-pdp-server:/abac-server/certs
       - abac_conf:/abac-server/config
-      - abac_logs:/abac-server/logs
+      - ./abac-logs:/abac-server/logs
 #      - abac_policies:/abac-server/policies
       - ./policies:/abac-server/policies
       - ./context-handlers/target:/abac-server/ext
@@ -281,7 +281,7 @@ services:
       - app_network
 
   abac-zuul-proxy:
-    image: registry.gitlab.com/asclepios-project/abac-authorization/abac-zuul-proxy
+    image: registry.gitlab.com/asclepios-project/abac-authorization/abac-zuul-proxy:3.0.3
     container_name: abac-zuul-proxy
     restart: on-failure
     depends_on:

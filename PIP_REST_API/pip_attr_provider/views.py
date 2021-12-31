@@ -130,8 +130,11 @@ def get_infov2(request):
         patient = Users.objects.get(identifier=patient_ID)
 
         ### Get Teams of User
-        team = Care_Team_Participants.objects.get(participant=user)
-        team = team.team
+        try:
+            team = Care_Team_Participants.objects.get(participant=user)
+            team = team.team
+        except:
+            team = None
 
         ### Get Encounters of patient
         try:
@@ -143,8 +146,8 @@ def get_infov2(request):
             response["under_emergency"] = "1"
             ### Episodes of care of encounter
             episodes = Episode_Of_Care.objects.all().filter(encounter=encounter)
-            print(episodes[0].team)
-            print(team)
+            # print(episodes[0].team)
+            # print(team)
 
             for episode in episodes:
                 if episode.team == team:
@@ -158,5 +161,6 @@ def get_infov2(request):
             print("Returning response = ", response)
             return Response(response)
         else:
+            response["under_emergency"] = "-1"
             print("Returning response = ", response)
             return Response(response)

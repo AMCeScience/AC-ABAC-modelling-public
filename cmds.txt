@@ -1,0 +1,3 @@
+curl -i -H "Authorization: Bearer $token" -X GET http://192.168.1.83/rest/acute-care-demo/call-centre
+
+token=$(curl -X POST http://192.168.1.83:8181/auth/realms/ambulance-example/protocol/openid-connect/token -d 'username=user1' -d 'password=user1' -d 'grant_type=password' -d 'client_id=calls-gateway' -d 'client_secret=supersecret' | sed 's/.*access_token":"//g' | sed 's/".*//g')
