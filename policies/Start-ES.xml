@@ -11,7 +11,7 @@
 <xacml3:Policy 
     xmlns:xacml3="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" 
     PolicyId="1d13737f-cec9-48d8-aa62-3b744b846906" 
-    RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable" 
+    RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-unless-deny" 
     Version="1.0">
 
     <xacml3:Description><![CDATA[
@@ -156,7 +156,6 @@
             <!-- COMPOSITE EXPRESSION - START:  operator: AND -->
             <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
                 <!-- SIMPLE EXPRESSION - START:  attribute=Request, property=crew-id, operator=NOT EQUALS, value=ATTRIBUTE(crew-assigned-to-call) -->
-                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
                     <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
                         <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
                             <xacml3:AttributeDesignator
@@ -165,14 +164,9 @@
                                     DataType="http://www.w3.org/2001/XMLSchema#string"
                                     MustBePresent="true"
                             />
-                        </xacml3:Apply>
-                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
-                            <xacml3:AttributeValue
-                                DataType="http://www.w3.org/2001/XMLSchema#string">
-                            </xacml3:AttributeValue>
-                        </xacml3:Apply>
+                        </xacml3:Apply>                        
+                        <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">x</xacml3:AttributeValue>                      
                     </xacml3:Apply>
-                </xacml3:Apply>
                 <!-- SIMPLE EXPRESSION - END -->
             </xacml3:Apply>
             <!-- COMPOSITE EXPRESSION - END:  operator: AND -->
@@ -193,12 +187,13 @@
                     <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule 2 - User belongs to a Team</xacml3:AttributeValue>
                 </AttributeAssignmentExpression>
                 <AttributeAssignmentExpression AttributeId="asclepios:obligation:parent">
-                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Start-ES</xacml3:AttributeValue>
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Read-AC-ABAC-policy</xacml3:AttributeValue>
                 </AttributeAssignmentExpression>
             </ObligationExpression>
         </xacml3:ObligationExpressions>
     </xacml3:Rule>
 
+    
     <!-- Rule Name: Rule 8 - User belongs to a call centre or hospital team -->
     <xacml3:Rule Effect="Deny" RuleId="user-belongs-to-call-centre-or-hospital">
         <xacml3:Condition>
@@ -206,7 +201,7 @@
             <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
                 <!-- SIMPLE EXPRESSION - START:  attribute=Request, property=url, operator=STARTS_WITH, value=zzz -->
                 <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
-                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-is-in">
+                    <!-- <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-is-in">
                         <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
                             <xacml3:AttributeDesignator
                                     AttributeId="team-tag"
@@ -221,6 +216,10 @@
                                 DataType="http://www.w3.org/2001/XMLSchema#string"
                                 MustBePresent="true"
                         />
+                    </xacml3:Apply> -->
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">call-centre</xacml3:AttributeValue>
+                        <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">call-centre</xacml3:AttributeValue>
                     </xacml3:Apply>
                 </xacml3:Apply>
                 <!-- SIMPLE EXPRESSION - END -->

@@ -21,7 +21,7 @@ def login():
 	return token
 
 if __name__ == "__main__":
-	print("Starting simulation for scenario 2")
+	print("Starting simulation for scenario 8")
 	user_token = login()
 
 	print("		Sending 30 requests...")

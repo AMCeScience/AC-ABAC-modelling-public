@@ -139,15 +139,18 @@ def get_infov2(request):
         ### Get Encounters of patient
         try:
             encounter = Encounter.objects.get(patient=patient, active=True)
-        except ObjectDoesNotExist:
+        except:
             encounter = None
 
         if encounter != None:
             response["under_emergency"] = "1"
-            ### Episodes of care of encounter
+            ### Episodes of care of encounter            
             episodes = Episode_Of_Care.objects.all().filter(encounter=encounter)
             # print(episodes[0].team)
             # print(team)
+
+            if len(episodes) == 0:
+                response["team_under_emergency"] = -1
 
             for episode in episodes:
                 if episode.team == team:
@@ -155,7 +158,7 @@ def get_infov2(request):
                     response["timestamp_invite"] = episode.timestamp_invite
                     response["timestamp_treat"] = episode.timestamp_treat
                     response["timestamp_revoke"] = episode.timestamp_revoke
-                    response["timestamp_revoke_extra"] = episode.timestamp_revoke + timedelta(minutes=team.extra_time)
+                    response["timestamp_revoke_extra"] = episode.timestamp_revoke + timedelta(minutes=team.extra_time)            
                     
 
             print("Returning response = ", response)

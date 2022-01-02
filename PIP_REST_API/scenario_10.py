@@ -47,7 +47,8 @@ user_patient = Users.objects.create(
 # Teams has ID length 4
 team = Care_Team.objects.create(
 	organization=org,
-	extra_time=1500
+	extra_time=30,
+	identifier=10
 )
 
 team_participants = Care_Team_Participants.objects.create(

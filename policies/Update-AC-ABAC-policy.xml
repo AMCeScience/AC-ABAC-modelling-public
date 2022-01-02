@@ -280,7 +280,7 @@
                                     MustBePresent="true"
                             />
                         </xacml3:Apply>                        
-                        <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string"></xacml3:AttributeValue>                      
+                        <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">x</xacml3:AttributeValue>                      
                     </xacml3:Apply>
                 <!-- SIMPLE EXPRESSION - END -->
             </xacml3:Apply>
@@ -460,12 +460,12 @@
     </xacml3:Rule>
 
     <!-- Rule Name: Rule 7 - Current Time less than or equal Time Revoke Extra -->
-    <xacml3:Rule Effect="Permit" RuleId="98f0d019-5f0e-45ae-b7b7-4c51cb3ecdf1">
+    <xacml3:Rule Effect="Deny" RuleId="98f0d019-5f0e-45ae-b7b7-4c51cb3ecdf1">
         <xacml3:Condition>
             <!-- COMPOSITE EXPRESSION - START:  operator: AND -->
             <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
                 <!-- SIMPLE EXPRESSION - START:  manually created -->
-                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal">
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal">
                     <!-- Current Date/Time -->
                     <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
                         <xacml3:AttributeDesignator
@@ -478,7 +478,7 @@
                     <!-- timestamp-shift-start -->
                     <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
                         <xacml3:AttributeDesignator
-                            AttributeId="timestamp-treat"
+                            AttributeId="timestamp-revoke-extra"
                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
                             DataType="http://www.w3.org/2001/XMLSchema#dateTime"
                             MustBePresent="true"
@@ -491,9 +491,9 @@
         </xacml3:Condition>
         <!-- Rule Obligations -->
         <xacml3:ObligationExpressions>
-            <ObligationExpression ObligationId="TrackingObligation:c4a8462d-f90b-41f5-a1a5-e1d3bba39f7d:98f0d019-5f0e-45ae-b7b7-4c51cb3ecdf1:permit" FulfillOn="Permit">
+            <ObligationExpression ObligationId="TrackingObligation:c4a8462d-f90b-41f5-a1a5-e1d3bba39f7d:98f0d019-5f0e-45ae-b7b7-4c51cb3ecdf1:deny" FulfillOn="Deny">
                 <AttributeAssignmentExpression AttributeId="asclepios:obligation:decision">
-                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PERMIT</xacml3:AttributeValue>
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Deny</xacml3:AttributeValue>
                 </AttributeAssignmentExpression>
                 <AttributeAssignmentExpression AttributeId="asclepios:obligation:type">
                     <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule</xacml3:AttributeValue>

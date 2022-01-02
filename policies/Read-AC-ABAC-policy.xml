@@ -287,7 +287,7 @@
                                     MustBePresent="true"
                             />
                         </xacml3:Apply>                        
-                        <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string"></xacml3:AttributeValue>                      
+                        <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">x</xacml3:AttributeValue>                      
                     </xacml3:Apply>
                 <!-- SIMPLE EXPRESSION - END -->
             </xacml3:Apply>

@@ -1,3 +1,5 @@
+## For this experiment change the user1 team-id attribute value from 10 to x
+
 from keycloak import KeycloakOpenID
 import requests
 
@@ -21,7 +23,7 @@ def login():
 	return token
 
 if __name__ == "__main__":
-	print("Starting simulation for scenario 2")
+	print("Starting simulation for scenario 6")
 	user_token = login()
 
 	print("		Sending 30 requests...")
