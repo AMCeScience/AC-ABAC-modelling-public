@@ -1,0 +1,35 @@
+#### first step
+
+cat scenario1-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > scenario1-times.txt
+cat scenario2-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > scenario2-times.txt
+cat scenario3-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > scenario3-times.txt
+cat scenario4-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > scenario4-times.txt
+cat scenario5-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > scenario5-times.txt
+cat scenario6-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > scenario6-times.txt
+cat scenario7-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > scenario7-times.txt
+cat scenario8-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > scenario8-times.txt
+cat scenario9-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > scenario9-times.txt
+cat scenario10-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > scenario10-times.txt
+cat scenario11-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > scenario11-times.txt
+cat scenario12-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > scenario12-times.txt
+cat scenario13-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > scenario13-times.txt
+cat scenario14-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > scenario14-times.txt
+cat scenario15-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > scenario15-times.txt
+
+
+#### second step
+cat scenario1-times.txt | awk '{ print $11 } { print $12 }' > s1-times.txt
+cat scenario2-times.txt | awk '{ print $11 } { print $12 }' > s2-times.txt
+cat scenario3-times.txt | awk '{ print $11 } { print $12 }' > s3-times.txt
+cat scenario4-times.txt | awk '{ print $11 } { print $12 }' > s4-times.txt
+cat scenario5-times.txt | awk '{ print $11 } { print $12 }' > s5-times.txt
+cat scenario6-times.txt | awk '{ print $11 } { print $12 }' > s6-times.txt
+cat scenario7-times.txt | awk '{ print $11 } { print $12 }' > s7-times.txt
+cat scenario8-times.txt | awk '{ print $11 } { print $12 }' > s8-times.txt
+cat scenario9-times.txt | awk '{ print $11 } { print $12 }' > s9-times.txt
+cat scenario10-times.txt | awk '{ print $11 } { print $12 }' > s10-times.txt
+cat scenario11-times.txt | awk '{ print $11 } { print $12 }' > s11-times.txt
+cat scenario12-times.txt | awk '{ print $11 } { print $12 }' > s12-times.txt
+cat scenario13-times.txt | awk '{ print $11 } { print $12 }' > s13-times.txt
+cat scenario14-times.txt | awk '{ print $11 } { print $12 }' > s14-times.txt
+cat scenario15-times.txt | awk '{ print $11 } { print $12 }' > s15-times.txt
