@@ -26,7 +26,6 @@ if __name__ == "__main__":
 	print("Starting simulation for scenario 6")
 	user_token = login()
 
-	print("		Sending 30 requests...")
 	endpoint = "http://192.168.1.83/rest/acute-care-demo/call-centre/read"
 	params = {
 	"ES-ID" : 10,
@@ -36,5 +35,10 @@ if __name__ == "__main__":
 	}
 	headers = {"Authorization": "Bearer {}".format(user_token["access_token"])}
 
-	for i in range(30):
+	print("		Warming up...")
+	for i in range(10):
+		requests.get(url=endpoint, params=params, headers=headers)
+
+	print("		Simulating 100 requests...")
+	for i in range(100):
 		requests.get(url=endpoint, params=params, headers=headers)

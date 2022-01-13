@@ -21,10 +21,10 @@ def login():
 	return token
 
 if __name__ == "__main__":
-	print("Starting simulation for scenario 3")
+	print("Starting simulation for scenario 15")
 	user_token = login()
 
-	print("		Sending 30 requests...")
+	print("		Sending 100 requests...")
 	endpoint = "http://192.168.1.83/rest/acute-care-demo/hospital/end_es"
 	params = {
 	"ES-ID" : 10,
@@ -34,5 +34,10 @@ if __name__ == "__main__":
 	}
 	headers = {"Authorization": "Bearer {}".format(user_token["access_token"])}
 
-	for i in range(30):
+
+	print("		Warming up...")
+	for i in range(10):
+		requests.post(url=endpoint, params=params, headers=headers)
+
+	for i in range(100):
 		requests.post(url=endpoint, params=params, headers=headers)

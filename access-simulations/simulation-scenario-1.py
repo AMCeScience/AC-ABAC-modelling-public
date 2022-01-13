@@ -1,6 +1,11 @@
 from keycloak import KeycloakOpenID
 import requests
-
+from pathlib import Path
+import os
+import shutil
+import timeit
+import time
+import json
 
 def login():
 	# Configure client
@@ -23,8 +28,7 @@ def login():
 if __name__ == "__main__":
 	print("Starting simulation for scenario 1")
 	user_token = login()
-
-	print("		Sending 30 requests...")
+	
 	endpoint = "http://192.168.1.83/rest/acute-care-demo/call-centre/read"
 	params = {
 	"ES-ID" : 10,
@@ -34,5 +38,30 @@ if __name__ == "__main__":
 	}
 	headers = {"Authorization": "Bearer {}".format(user_token["access_token"])}
 
-	for i in range(30):
+	print("		Warming up...")
+	for i in range(10):
 		requests.get(url=endpoint, params=params, headers=headers)
+
+	print("		ABAC logs reset...")
+	# os.remove('../abac-logs/abac-server.log')
+	# Path('../abac-logs/abac-server.log').touch()
+
+	times_dict = {}
+
+	print("		Simulating 100 requests...")
+	for i in range(100):
+		# start = timeit.default_timer()
+		start = time.perf_counter()
+		r = requests.get(url=endpoint, params=params, headers=headers)
+		# stop = timeit.default_timer()
+		stop = time.perf_counter()
+		diff = stop - start
+		# print('Time: ', stop - start)
+		times_dict[i] = diff*1000
+
+	print("		Saving results...")
+	
+	with open('scenario1-from-client.json', 'w', encoding ='utf8') as json_file:
+	    json.dump(times_dict, json_file, allow_nan=True)
+
+	print("Simulation complete!")

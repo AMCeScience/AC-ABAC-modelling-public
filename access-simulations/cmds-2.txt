@@ -1,0 +1,25 @@
+#### first step
+
+cat parallel-10users-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > parallel-10users-times.txt
+cat parallel-20users-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > parallel-20users-times.txt
+cat parallel-30users-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > parallel-30users-times.txt
+cat parallel-40users-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > parallel-40users-times.txt
+cat parallel-50users-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > parallel-50users-times.txt
+cat parallel-60users-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > parallel-60users-times.txt
+cat parallel-70users-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > parallel-70users-times.txt
+cat parallel-80users-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > parallel-80users-times.txt
+cat parallel-90users-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > parallel-90users-times.txt
+cat parallel-100users-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durations for: Evaluation" > parallel-100users-times.txt
+
+#### second step
+
+cat parallel-10users-times.txt | awk '{ print $11 } { print $12 }' > p10-times.txt
+cat parallel-20users-times.txt | awk '{ print $11 } { print $12 }' > p20-times.txt
+cat parallel-30users-times.txt | awk '{ print $11 } { print $12 }' > p30-times.txt
+cat parallel-40users-times.txt | awk '{ print $11 } { print $12 }' > p40-times.txt
+cat parallel-50users-times.txt | awk '{ print $11 } { print $12 }' > p50-times.txt
+cat parallel-60users-times.txt | awk '{ print $11 } { print $12 }' > p60-times.txt
+cat parallel-70users-times.txt | awk '{ print $11 } { print $12 }' > p70-times.txt
+cat parallel-80users-times.txt | awk '{ print $11 } { print $12 }' > p80-times.txt
+cat parallel-90users-times.txt | awk '{ print $11 } { print $12 }' > p90-times.txt
+cat parallel-100users-times.txt | awk '{ print $11 } { print $12 }' > p100-times.txt
