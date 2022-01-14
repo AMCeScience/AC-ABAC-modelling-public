@@ -405,6 +405,52 @@
         </xacml3:ObligationExpressions>
     </xacml3:Rule>
 
+    <!-- Rule Name: Rule 3 - Emergency Session belongs to Emergencies table, therefore it exists -->
+    <xacml3:Rule Effect="Deny" RuleId="emergency-session-is-active">
+        <xacml3:Condition>            
+            <!-- COMPOSITE EXPRESSION - START:  operator: AND -->
+            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+                <!-- SIMPLE EXPRESSION - START:  attribute=Request, property=crew-id, operator=NOT EQUALS, value=ATTRIBUTE(crew-assigned-to-call) -->
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+                            <xacml3:AttributeDesignator
+                                    AttributeId="emergency-active"
+                                    Category="urn:eu:asclepios-project:casm:1.0"
+                                    DataType="http://www.w3.org/2001/XMLSchema#string"
+                                    MustBePresent="true"
+                            />
+                        </xacml3:Apply>
+                        <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">1</xacml3:AttributeValue>
+                        
+                    </xacml3:Apply>
+                </xacml3:Apply>
+                <!-- SIMPLE EXPRESSION - END -->
+            </xacml3:Apply>
+            <!-- COMPOSITE EXPRESSION - END:  operator: AND -->
+        </xacml3:Condition>
+        <!-- Rule Obligations -->
+        <xacml3:ObligationExpressions>
+            <ObligationExpression ObligationId="TrackingObligation:team-under-emergency-active-teams:deny" FulfillOn="Deny">
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:decision">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">DENY</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:type">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:id">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">emergency-session-is-active</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:name">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Rule 3 - Emergency Session belongs to Emergencies table</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+                <AttributeAssignmentExpression AttributeId="asclepios:obligation:parent">
+                    <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Update-AC-ABAC-policy</xacml3:AttributeValue>
+                </AttributeAssignmentExpression>
+            </ObligationExpression>
+        </xacml3:ObligationExpressions>
+    </xacml3:Rule>
+
     <!-- Rule Name: Rule 6 - Current Time greater than or equal Time Treat -->
     <xacml3:Rule Effect="Deny" RuleId="d60fc86c-2efa-4deb-8521-561987b7d636">
         <xacml3:Condition>

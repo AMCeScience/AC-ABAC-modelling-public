@@ -201,7 +201,7 @@
             <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
                 <!-- SIMPLE EXPRESSION - START:  attribute=Request, property=url, operator=STARTS_WITH, value=zzz -->
                 <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
-                    <!-- <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-is-in">
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-is-in">
                         <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
                             <xacml3:AttributeDesignator
                                     AttributeId="team-tag"
@@ -216,10 +216,6 @@
                                 DataType="http://www.w3.org/2001/XMLSchema#string"
                                 MustBePresent="true"
                         />
-                    </xacml3:Apply> -->
-                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                        <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">call-centre</xacml3:AttributeValue>
-                        <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">call-centre</xacml3:AttributeValue>
                     </xacml3:Apply>
                 </xacml3:Apply>
                 <!-- SIMPLE EXPRESSION - END -->
