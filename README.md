@@ -47,11 +47,29 @@ docker-compose down -v
 
 To evaluate the correctness of each policy, scenarios were created where we change the values on PIP database.
 
-[TODO Description]
+The scripts to evaluate the correctness of each policy can be found in the access-simulations/ folder.
+
+
+Before running each scenarios' script, the prototype must be updated with the attributes for each scenario.
+```bash
+cd PIP_REST_API
+python3 manage.py shell < SCENARIO_N.py
+```
+
+Then reset the container and run
+```bash
+cd access-simulations
+python3 simulation-scenario-N.py #sequencial requests
+python3 parallel-simulation.py #parallel requests
+```
+
+
+
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update tests as appropriate.
+Please make sure to update tests/simulations as appropriate.
 
 #### [License](LICENSE)
