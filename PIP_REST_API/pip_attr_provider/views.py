@@ -125,6 +125,7 @@ def get_infov2(request):
         user = Users.objects.get(identifier=user_ID)
         response["timestamp_shift_start"] = user.shift_start
         response["timestamp_shift_end"] = user.shift_end
+        response["user_id"] = user.identifier
 
         ### Get Patient
         patient = Users.objects.get(identifier=patient_ID)
@@ -139,21 +140,25 @@ def get_infov2(request):
         ### Get Encounters of patient
         try:
             encounter = Encounter.objects.get(patient=patient, active=True)
+            response["starter_id"] = encounter.user_starter.identifier
+            if(encounter.identifier == ES_ID):
+                response["emergency_active"] = 1
+            else:
+                response["emergency_active"] = -1
         except:
             encounter = None
+        
 
         if encounter != None:
             response["under_emergency"] = "1"
             ### Episodes of care of encounter            
-            episodes = Episode_Of_Care.objects.all().filter(encounter=encounter)
-            # print(episodes[0].team)
-            # print(team)
+            episodes = Episode_Of_Care.objects.all().filter(encounter=encounter)            
 
             if len(episodes) == 0:
                 response["team_under_emergency"] = -1
 
             for episode in episodes:
-                if episode.team == team:
+                if episode.team == team:                    
                     response["team_under_emergency"] = str(episode.team.identifier)
                     response["timestamp_invite"] = episode.timestamp_invite
                     response["timestamp_treat"] = episode.timestamp_treat
