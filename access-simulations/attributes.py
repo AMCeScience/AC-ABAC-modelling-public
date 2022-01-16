@@ -174,6 +174,7 @@ D_Policy= [Mean_s5_evaluation, Mean_s6_evaluation, Mean_s7_evaluation, Mean_s8_e
 
 err_Policy =[err_s1_evaluation, err_s2_evaluation, err_s3_evaluation, err_s4_evaluation, err_s5_evaluation, err_s6_evaluation, err_s7_evaluation, err_s8_evaluation, err_s9_evaluation, err_s10_evaluation, err_s11_evaluation, err_s12_evaluation, err_s13_evaluation, err_s14_evaluation, err_s15_evaluation]
 
+P_err_Policy = [err_s1_evaluation,err_s2_evaluation, err_s3_evaluation, err_s4_evaluation, err_s12_evaluation, err_s14_evaluation]
 err_ABAC =[err_s1_total, err_s2_total, err_s3_total, err_s4_total, err_s5_total, err_s6_total, err_s7_total, err_s8_total, err_s9_total, err_s10_total, err_s11_total, err_s12_total, err_s13_total, err_s14_total, err_s15_total]
 
 errPermit = [err_s1_total, err_s2_total, err_s3_total, err_s4_total,err_s12_total, err_s14_total]
@@ -186,22 +187,44 @@ print(err_s2_total)
 print(err_s2_evaluation)
 
 
+read= [Mean_s1_evaluation, Mean_s2_evaluation]
+update = [Mean_s3_evaluation, Mean_s4_evaluation]
+errread = [err_s1_evaluation, err_s2_evaluation]
+errupdate = [err_s3_evaluation, err_s4_evaluation]
+
 x =[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-labels= ['S1', 'S2','S3','S4','S5','S6','S7','S8','S9','S10','S11','S12','S13','S14','S15']
+labels= ['6','15','15','15','15','16']
 plt.rc('xtick', labelsize=10) 
 plt.rc('ytick', labelsize=10)
 
 fig, ax = plt.subplots()
 
 #kwargs = dict(capsize=2, elinewidth=1.5, linewidth=1, ms=12)
-ax.bar([1,2,3,4,12,14], Permit, yerr=errPermit , color='olivedrab',label='Permit')
-ax.bar([5,6,7,8,9,10,11,13,15], Denial, yerr=errDenial,color='orangered', label='Deny')
-ax.bar(x, Av_Policy, color='orange', label='Policy evaluation')
+
+
+ax.bar([15], Mean_s1_evaluation, yerr= err_s1_evaluation , label='S1')
+ax.bar([14], Mean_s2_evaluation, yerr= err_s2_evaluation , label='S2')
+ax.bar([9], Mean_s3_evaluation, yerr= err_s3_evaluation , label='S3')
+ax.bar([10], Mean_s4_evaluation, yerr= err_s4_evaluation , label='S4')
+ax.bar([3], Mean_s5_evaluation, yerr= err_s5_evaluation , label='S5')
+ax.bar([4], Mean_s6_evaluation, yerr= err_s6_evaluation , label='S6')
+ax.bar([5], Mean_s7_evaluation, yerr= err_s7_evaluation , label='S7')
+ax.bar([7], Mean_s8_evaluation, yerr= err_s8_evaluation , label='S8')
+ax.bar([13], Mean_s9_evaluation, yerr= err_s9_evaluation , label='S9')
+ax.bar([6], Mean_s10_evaluation, yerr= err_s10_evaluation , label='S10')
+ax.bar([8], Mean_s11_evaluation, yerr= err_s11_evaluation , label='S11')
+ax.bar([1], Mean_s12_evaluation, yerr=  err_s12_evaluation , label='S12')
+ax.bar([2], Mean_s13_evaluation, yerr=  err_s13_evaluation ,label='S13')
+ax.bar([11], Mean_s14_evaluation, yerr= err_s14_evaluation , label='S14')
+ax.bar([12], Mean_s15_evaluation, yerr= err_s15_evaluation , label='S15')
+
+#ax.bar([5,6,7,8,9,10,11,13,15], Denial, yerr=errDenial,color='orangered', label='Deny')
+#ax.bar(x, Av_Policy, color='orange', label='Policy evaluation')
 
 #ax.bar([5,6,7,8,9,10,11,13,15], D_Policy, color='orangered', ecolor='orange', label='Denial' )
 #ax.bar(x, AvTotal, 35, yerr=errTotal, color='grey', label='Total')
 ax.legend(loc='best', frameon=True, fontsize=10)
-ax.set_xlabel('Scenarios', fontsize=12)
+ax.set_xlabel('Number of contextual attributes', fontsize=12)
 ax.set_ylabel('Time (ms)', fontsize=12)
 ax.set_xticks(x)
 ax.set_xticklabels(labels)
@@ -214,45 +237,3 @@ plt.show()
 plt.clf()
 plt.cla()
 plt.close()
-
-# #s1_totalI = list(map(int, s1_total))
-# s2_totalI = list(map(int, s2_total))
-# s3_totalI = list(map(int, s3_total))
-# s4_totalI = list(map(int, s4_total))
-# s5_totalI = list(map(int, s5_total))
-# s6_totalI = list(map(int, s6_total))
-# s7_totalI = list(map(int, s7_total))
-# s8_totalI = list(map(int, s8_total))
-# s9_totalI = list(map(int, s9_total))
-# s10_totalI = list(map(int, s10_total))
-# s11_totalI = list(map(int, s11_total))
-# s12_totalI = list(map(int, s12_total))
-# s13_totalI = list(map(int, s13_total))
-# s14_totalI = list(map(int, s14_total))
-# s15_totalI = list(map(int, s15_total))
-
-# # plt.rc('xtick', labelsize=10) 
-# # plt.rc('ytick', labelsize=10)
-# fig, bplot = plt.subplots()
-# data = [s1_total, s2_totalI, s3_totalI, s4_totalI, s5_totalI, s6_totalI, s7_totalI, s8_totalI, s9_totalI, s10_totalI, s11_totalI, s12_totalI, s13_totalI, s14_totalI, s15_totalI[::2]] 
-# colors = ['olivedrab', 'olivedrab', 'olivedrab', 'olivedrab', 'orangered', 'orangered', 'orangered', 'orangered', 'orangered', 'orangered', 'orangered', 'olivedrab', 'orangered', 'olivedrab', 'orangered']
-# bplot= plt.boxplot(data, 0,  '', labels=('S1', 'S2','S3','S4','S5','S6','S7','S8','S9','S10','S11','S12','S13','S14','S15'), patch_artist=True)
-# print(bplot['boxes'])
-# #plt.xticks(rotation=45, fontsize=10)
-# #plt.rc('ytick', labelsize=10)
-# for patch, color in zip(bplot['boxes'], colors):
-# 	patch.set_facecolor(color)
-# #plt.grid(True)
-# #plt.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)	
-# # ax.legend(loc='best', frameon=True, fontsize=12)
-# fig.legend([['olivedrab'][0], ['orangered'][0]], ['Permit', 'Deny'])
-# plt.xlabel('Scenarios', fontsize=12)
-# plt.ylabel('Time (ms)', fontsize=12)
-# plotfile = 'performanceboxplot.pdf'
-# pp = PdfPages(plotfile)
-# pp.savefig()
-# pp.close()
-# plt.show()
-# plt.clf()
-# plt.cla()
-# plt.close()
