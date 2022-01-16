@@ -24,7 +24,7 @@
         <dependency>
             <groupId>eu.asclepios.authorization.abac</groupId>
             <artifactId>abac-authorization-server</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.3</version>
             <scope>provided</scope>
         </dependency>
 

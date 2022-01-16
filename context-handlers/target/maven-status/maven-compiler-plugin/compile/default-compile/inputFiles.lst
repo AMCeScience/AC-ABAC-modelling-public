@@ -1,4 +1,4 @@
-/Users/AMC/Desktop/ASCLEPIOS-INTEGRACAO/abac-docker/AMBULANCE_EXAMPLE_with_context_handlers/context-handlers/src/main/java/eu/asclepios/example/contexthandlers/CustomRestAttributeFinder.java
-/Users/AMC/Desktop/ASCLEPIOS-INTEGRACAO/abac-docker/AMBULANCE_EXAMPLE_with_context_handlers/context-handlers/src/main/java/eu/asclepios/example/contexthandlers/db/EmergencyCallRepository.java
-/Users/AMC/Desktop/ASCLEPIOS-INTEGRACAO/abac-docker/AMBULANCE_EXAMPLE_with_context_handlers/context-handlers/src/main/java/eu/asclepios/example/contexthandlers/db/EmergencyCallEntity.java
-/Users/AMC/Desktop/ASCLEPIOS-INTEGRACAO/abac-docker/AMBULANCE_EXAMPLE_with_context_handlers/context-handlers/src/main/java/eu/asclepios/example/contexthandlers/CustomDbAttributeFinder.java
+/home/ubuntu/AC-ABAC-modelling-public/context-handlers/src/main/java/eu/asclepios/example/contexthandlers/CustomRestAttrFinder.java
+/home/ubuntu/AC-ABAC-modelling-public/context-handlers/src/main/java/eu/asclepios/example/contexthandlers/CustomDbAttributeFinder.java
+/home/ubuntu/AC-ABAC-modelling-public/context-handlers/src/main/java/eu/asclepios/example/contexthandlers/db/EmergencyCallRepository.java
+/home/ubuntu/AC-ABAC-modelling-public/context-handlers/src/main/java/eu/asclepios/example/contexthandlers/db/EmergencyCallEntity.java

@@ -4,7 +4,7 @@ import requests
 
 def login():
 	# Configure client
-	keycloak_openid = KeycloakOpenID(server_url="http://192.168.1.83:8181/auth/",
+	keycloak_openid = KeycloakOpenID(server_url="http://10.255.230.159:8181/auth/",
 	                    client_id="calls-gateway",
 	                    realm_name="ambulance-example",
 	                    client_secret_key="supersecret")
@@ -25,9 +25,9 @@ if __name__ == "__main__":
 	user_token = login()
 
 	print("		Sending 100 requests...")
-	endpoint = "http://192.168.1.83/rest/acute-care-demo/hospital/end_es"
+	endpoint = "http://10.255.230.159/rest/acute-care-demo/hospital/end_es"
 	params = {
-	"ES-ID" : 10,
+	"ES-ID" : 1000,
 	"format" : "json",
 	"patient-ID" : 100,
 	"user-ID" : 10

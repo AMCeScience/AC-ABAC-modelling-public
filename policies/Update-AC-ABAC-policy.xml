@@ -509,7 +509,7 @@
     <xacml3:Rule Effect="Deny" RuleId="98f0d019-5f0e-45ae-b7b7-4c51cb3ecdf1">
         <xacml3:Condition>
             <!-- COMPOSITE EXPRESSION - START:  operator: AND -->
-            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
+			<!--<xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">-->
                 <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
                     <!-- SIMPLE EXPRESSION - START:  manually created -->
                     <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal">
@@ -534,7 +534,7 @@
                     </xacml3:Apply>
                 </xacml3:Apply>
                 <!-- SIMPLE EXPRESSION - END -->
-            </xacml3:Apply>
+				    <!--</xacml3:Apply>-->
             <!-- COMPOSITE EXPRESSION - END:  operator: AND -->
         </xacml3:Condition>
         <!-- Rule Obligations -->

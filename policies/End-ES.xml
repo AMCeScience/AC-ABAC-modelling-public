@@ -199,7 +199,6 @@
                             />
                         </xacml3:Apply>
                         <xacml3:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">1</xacml3:AttributeValue>
-                        
                     </xacml3:Apply>
                 </xacml3:Apply>
                 <!-- SIMPLE EXPRESSION - END -->
@@ -386,20 +385,20 @@
                 <!-- SIMPLE EXPRESSION - START:  attribute=Request, property=url, operator=STARTS_WITH, value=zzz -->
                 <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
                     <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+			    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
                             <xacml3:AttributeDesignator
                                     AttributeId="team-tag"
                                     Category="urn:eu:asclepios-project:casm:1.0"
                                     DataType="http://www.w3.org/2001/XMLSchema#string"
                                     MustBePresent="true"
                             />
+			    </xacml3:Apply>
                              <xacml3:AttributeValue
                                 DataType="http://www.w3.org/2001/XMLSchema#string">hospital</xacml3:AttributeValue>
                         </xacml3:Apply>                                                
                 </xacml3:Apply>
                 <!-- SIMPLE EXPRESSION - END -->
-            </xacml3:Apply>
-            </xacml3:Apply>
+            </xacml3:Apply>            
             <!-- COMPOSITE EXPRESSION - END:  operator: AND -->
         </xacml3:Condition>
         <!-- Rule Obligations -->
@@ -470,6 +469,7 @@
                                     DataType="http://www.w3.org/2001/XMLSchema#string"
                                     MustBePresent="true"
                             />
+                        </xacml3:Apply>
                         
                         <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
                             <xacml3:AttributeDesignator
@@ -540,3 +540,4 @@
         </ObligationExpression>
     </xacml3:ObligationExpressions>
 </xacml3:Policy>
+

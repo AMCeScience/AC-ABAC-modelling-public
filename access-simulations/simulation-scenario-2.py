@@ -4,7 +4,7 @@ import requests
 
 def login():
 	# Configure client
-	keycloak_openid = KeycloakOpenID(server_url="http://192.168.1.83:8181/auth/",
+	keycloak_openid = KeycloakOpenID(server_url="http://10.255.230.159:8181/auth/",
 	                    client_id="calls-gateway",
 	                    realm_name="ambulance-example",
 	                    client_secret_key="supersecret")
@@ -24,7 +24,7 @@ if __name__ == "__main__":
 	print("Starting simulation for scenario 2")
 	user_token = login()
 	
-	endpoint = "http://192.168.1.83/rest/acute-care-demo/call-centre/read"
+	endpoint = "http://10.255.230.159/rest/acute-care-demo/call-centre/read"
 	params = {
 	"ES-ID" : 10,
 	"format" : "json",

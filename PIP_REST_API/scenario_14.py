@@ -31,6 +31,12 @@ org = Organization.objects.create(
 # Users professionals has ID length 2
 shift_start = datetime.now() - timedelta(hours=4)
 shift_end = datetime.now() + timedelta(hours=4)
+
+user_starter_professional = Users.objects.create(
+        user_type=4,
+        identifier=20
+        )
+
 user_professional = Users.objects.create(
 	user_type=4,
 	identifier=10,
@@ -60,6 +66,7 @@ team_participants = Care_Team_Participants.objects.create(
 # Encounter
 encounter = Encounter.objects.create(
 	identifier=1000,
+        user_starter=user_starter_professional,
 	patient=user_patient,
 	active=True
 )

@@ -9,7 +9,7 @@
 # https://www.mozilla.org/en-US/MPL/2.0/
 #
 
-version: "3"
+version: "2.1"
 
 services:
   cert:
@@ -122,7 +122,7 @@ services:
       && cp -f ./certs/pdp-server* ./config/
       && ./run.sh "
     environment:
-      ABAC_SERVER_EXT_ATTRIBUTE_FINDERS: eu.asclepios.example.contexthandlers.CustomDbAttributeFinder, eu.asclepios.example.contexthandlers.CustomRestAttributeFinder
+      ABAC_SERVER_EXT_ATTRIBUTE_FINDERS: eu.asclepios.example.contexthandlers.CustomDbAttributeFinder, eu.asclepios.example.contexthandlers.CustomRestAttrFinder
       ABAC_SERVER_LIB_PATH: /abac-server/ext/abac-example-context-handlers-1.0.0-SNAPSHOT-jar-with-dependencies.jar
       ABAC_SERVER_KEYSTORE_FILE: /abac-server/certs/pdp-server-keystore.p12
       ABAC_SERVER_KEYSTORE_PASSWORD: ${E_ABAC_SERVER_KEYSTORE_PASSWORD}

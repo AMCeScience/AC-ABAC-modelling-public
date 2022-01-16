@@ -60,6 +60,7 @@ team_participants = Care_Team_Participants.objects.create(
 # Encounter
 encounter = Encounter.objects.create(
 	identifier=1000,
+        user_starter=user_professional,
 	patient=user_patient,
 	active=True
 )

@@ -1,4 +1,4 @@
 eu/asclepios/example/contexthandlers/CustomDbAttributeFinder.class
 eu/asclepios/example/contexthandlers/db/EmergencyCallEntity.class
+eu/asclepios/example/contexthandlers/CustomRestAttrFinder.class
 eu/asclepios/example/contexthandlers/db/EmergencyCallRepository.class
-eu/asclepios/example/contexthandlers/CustomRestAttributeFinder.class

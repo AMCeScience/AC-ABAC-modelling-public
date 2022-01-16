@@ -1,0 +1,347 @@
+#
+# Copyright (C) 2017-2021 
+# Institute of Communication and Computer Systems (imu.iccs.gr)
+# Department of Epidemiology and Data Science (https://www.ebioscience.amc.nl), 
+# Amsterdam University Medical Centers - University of Amsterdam, Amsterdam, Netherlands
+#
+# This Source Code Form is subject to the terms of the Mozilla Public License, v2.0.
+# If a copy of the MPL was not distributed with this file, You can obtain one at
+# https://www.mozilla.org/en-US/MPL/2.0/
+#
+
+version: "3"
+
+services:
+  cert:
+    image: openjdk:8-jdk-alpine
+    container_name: cert
+    command: >
+      sh -c "chmod +x /mnt/bin/gen-cert.sh
+      && rm -rf /mnt/certs/common/* /mnt/certs/pdp-server/* /mnt/certs/ample-editor/*
+      && /mnt/bin/gen-cert.sh pdp-server $E_ABAC_SERVER_KEYSTORE_PASSWORD $E_COMMON_TRUSTSTORE_PASSWORD
+      && /mnt/bin/gen-cert.sh ample-editor $E_AMPLE_KEYSTORE_PASSWORD $E_COMMON_TRUSTSTORE_PASSWORD
+      && touch /mnt/certs/common/.ready"
+    working_dir: "/mnt/tpl"
+    volumes:
+      - ./conf-bin:/mnt/bin
+      - certs-common:/mnt/certs/common
+      - certs-pdp-server:/mnt/certs/pdp-server
+      - certs-ample-editor:/mnt/certs/ample-editor
+#      - ./conf/certs/common:/mnt/certs/common:rw
+#      - ./conf/certs/pdp-server:/mnt/certs/pdp-server:rw
+#      - ./conf/certs/ample-editor:/mnt/certs/ample-editor:rw
+
+  conf:
+    image: jwilder/dockerize
+    container_name: conf
+    depends_on:
+      cert:
+        condition: service_started
+    #entrypoint: "dockerize -template /mnt/tpl/realm-export.json.tpl:/mnt/conf/realm-export.json -template /mnt/tpl/keycloak.sql.tpl:/mnt/conf/keycloak.sql"
+    #entrypoint: "dockerize -template /mnt/tpl/realm-export.json.tpl:/mnt/conf/realm-export.json"
+    entrypoint: >
+      sh -c "while [ ! -f /mnt/certs/common/.ready ]; do sleep 1; done
+      && dockerize -template /mnt/tpl/realm-export.json.tpl:/mnt/conf/realm-export.json"
+    environment:
+      APP_BASE_URL: ${E_APP_BASE_URL}
+      KEYCLOAK_REALM: ${E_KEYCLOAK_REALM}
+      KEYCLOAK_RESOURCE: ${E_KEYCLOAK_RESOURCE}
+      KEYCLOAK_RESOURCE_SECRET: ${E_KEYCLOAK_RESOURCE_SECRET}
+    volumes:
+      - ./conf-tpl:/mnt/tpl
+      - certs-common:/mnt/certs/common:ro
+      - kc_conf:/mnt/conf
+#      - ./conf/certs/common:/mnt/certs/common:ro
+#      - ./conf:/mnt/conf:rw
+
+  mysql:
+    image: mysql:5.5
+    container_name: mysql
+    restart: always
+    depends_on:
+      conf:
+        condition: service_started
+    healthcheck:
+      #start_period: 30s
+      test: [ "CMD-SHELL", 'mysql --database=$$MYSQL_DATABASE --password=$$MYSQL_ROOT_PASSWORD --execute="SELECT count(table_name) > 0 FROM information_schema.tables;" --skip-column-names -B' ]
+      interval: 30s
+      timeout: 10s
+      retries: 4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${E_MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${E_MYSQL_DATABASE}
+      MYSQL_USER: ${E_MYSQL_USER}
+      MYSQL_PASSWORD: ${E_MYSQL_PASSWORD}
+#    ports:
+#      - 3306:3306
+    volumes:
+      - kc_conf:/docker-entrypoint-initdb.d:ro
+      - kc_mysql_data:/var/lib/mysql
+#      - ./conf:/docker-entrypoint-initdb.d:ro
+#      - ./mysql-data:/var/lib/mysql
+    networks:
+      app_network:
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.7
+    container_name: phpmyadmin
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      PMA_PORT: 3306
+      PMA_HOST: mysql
+    ports:
+      - 8010:80
+    networks:
+      app_network:
+
+  # PIP
+  django-rest:
+    build: ./PIP_REST_API/
+    container_name: django-rest
+    environment:
+      SECRET: 3c5a7f7a-f4c5-4b4e-92a3-0fcc3a734dc6
+#    ports:
+#      - "8000:8000"
+    networks:
+      - app_network
+
+  pdp-server:
+    image: registry.gitlab.com/asclepios-project/abac-authorization/abac-server:3.0.4
+    container_name: pdp-server
+    depends_on:
+      conf:
+        condition: service_started
+      django-rest:
+        condition: service_started
+      mysql:
+        condition: service_healthy
+    entrypoint: >
+      sh -c "while [ ! -f certs/.ready ]; do sleep 1; done
+      && cp -f ./certs/pdp-server* ./config/
+      && ./run.sh "
+    environment:
+      ABAC_SERVER_EXT_ATTRIBUTE_FINDERS: eu.asclepios.example.contexthandlers.CustomDbAttributeFinder, eu.asclepios.example.contexthandlers.CustomRestAttributeFinder
+      ABAC_SERVER_LIB_PATH: /abac-server/ext/abac-example-context-handlers-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+      ABAC_SERVER_KEYSTORE_FILE: /abac-server/certs/pdp-server-keystore.p12
+      ABAC_SERVER_KEYSTORE_PASSWORD: ${E_ABAC_SERVER_KEYSTORE_PASSWORD}
+      ABAC_SERVER_KEYSTORE_TYPE: PKCS12
+      ABAC_SERVER_KEY_ALIAS: pdp-server
+      ABAC_SERVER_ACCESS_KEY: ${E_ABAC_SERVER_ACCESS_KEY}
+      ABAC_SERVER_API_KEY: ${E_ABAC_SERVER_API_KEY}
+      #ABAC_SERVER_XACML_POLICIES_DIR: /abac-server/policies/
+      #ABAC_SERVER_ABE_POLICIES_DIR: /abac-server/policies/
+      ABAC_SERVER_JPA_HIBERNATE_DDL_AUTO: update
+      ABAC_SERVER_DB_URL: jdbc:mysql://mysql:3306/${E_ABAC_SERVER_APAM_DB}?createDatabaseIfNotExist=true
+      ABAC_SERVER_DB_DRIVER: com.mysql.jdbc.Driver
+      ABAC_SERVER_DB_USERNAME: root
+      ABAC_SERVER_DB_PASSWORD: ${E_MYSQL_ROOT_PASSWORD}
+      ABAC_SERVER_DB_DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
+      CUSTOM_DB_FINDER_DB_DRIVER: com.mysql.jdbc.Driver
+      CUSTOM_DB_FINDER_DB_URL: jdbc:mysql://mysql:3306/${E_MYSQL_DATABASE}
+      CUSTOM_DB_FINDER_DB_USERNAME: ${E_MYSQL_USER}
+      CUSTOM_DB_FINDER_DB_PASSWORD: ${E_MYSQL_PASSWORD}
+      CUSTOM_DB_FINDER_CALL_ENTRIES: 12345:600000:ambulance-crew-id-1234, 23456:600000:ambulance-crew-id-2345, 34567:600000:ambulance-crew-id-3456
+      CUSTOM_REST_FINDER_REST_URL: "http://django-rest:8000/attribute-provider/getinfov2?ES-ID={{es-id}}&format=json&patient-ID={{patient-id}}&user-ID={{user-id}}"
+    volumes:
+      - certs-pdp-server:/abac-server/certs
+      - abac_conf:/abac-server/config
+      - ./abac-logs:/abac-server/logs
+#      - abac_policies:/abac-server/policies
+      - ./policies:/abac-server/policies
+      - ./context-handlers/target:/abac-server/ext
+    ports:
+      - "7071:7071"
+    networks:
+      - app_network
+
+  keycloak:
+    image: jboss/keycloak:9.0.2
+    container_name: keycloak
+    restart: always
+    command:
+      #- "-b 0.0.0.0 -Djboss.http.port=8181"
+      - "-b 0.0.0.0 -Djboss.http.port=8181 -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json"
+    depends_on:
+      conf:
+        condition: service_started
+      mysql:
+        condition: service_healthy
+#    healthcheck:
+#      test: "curl -f http://localhost:8181/auth || exit 1"
+#      start_period: 30s
+#      interval: 10s
+#      timeout: 5s
+    environment:
+      KEYCLOAK_USER: ${E_KEYCLOAK_USER}
+      KEYCLOAK_PASSWORD: ${E_KEYCLOAK_PASSWORD}
+      PROXY_ADDRESS_FORWARDING: "true"
+      DB_VENDOR: mysql
+      DB_ADDR: mysql
+      DB_PORT: 3306
+      DB_DATABASE: ${E_MYSQL_DATABASE}
+      DB_USER: ${E_MYSQL_USER}
+      DB_PASSWORD: ${E_MYSQL_PASSWORD}
+    ports:
+      - 8181:8181
+    volumes:
+      - kc_conf:/opt/jboss/keycloak/imports:ro
+    networks:
+      - app_network
+
+  ample-editor:
+    image: registry.gitlab.com/asclepios-project/ample-editor
+    container_name: ample-editor
+    depends_on:
+      pdp-server:
+        condition: service_started
+#      keycloak:
+#        condition: service_healthy
+    environment:
+      PAP_SERVER_URL: https://pdp-server:7071
+      PAP_SERVER_API_KEY: ${E_ABAC_SERVER_API_KEY}
+      ABE_SERVER_URL: https://pdp-server:7071
+      ABE_SERVER_API_KEY: ${E_ABAC_SERVER_API_KEY}
+      AMPLE_KEYSTORE_TYPE: PKCS12
+      AMPLE_KEYSTORE_FILE: /ample/certs/ample/ample-editor-keystore.p12
+      AMPLE_KEYSTORE_PASSWORD: ${E_AMPLE_KEYSTORE_PASSWORD}
+      AMPLE_KEY_ALIAS: ample-editor
+      AMPLE_TRUSTSTORE_TYPE: PKCS12
+      AMPLE_TRUSTSTORE_FILE: /ample/certs/common/common-truststore.p12
+      AMPLE_TRUSTSTORE_PASSWORD: ${E_COMMON_TRUSTSTORE_PASSWORD}
+    volumes:
+      - ample_conf:/ample/conf
+      - ample_DB:/ample/DB
+      - ample_logs:/ample/logs
+      - certs-ample-editor:/ample/certs/ample
+      - certs-common:/ample/certs/common
+    ports:
+      - "9090:9090"
+    networks:
+      - app_network
+
+  # A simple Web app/page that must be protected
+  webapp:
+    image: trinitronx/python-simplehttpserver
+    container_name: webapp
+    volumes:
+      - ./www:/var/www:ro
+#    ports:
+#      - 8080:8080
+    networks:
+      - app_network
+
+  # Django app
+  django-app:
+    build: ./django-application/
+    container_name: django-app
+    environment:
+      SECRET: 3c5a7f7a-f4c5-4b4e-92a3-0fcc3a734dc6
+#    ports:
+#      - "8000:8000"
+    networks:
+      - app_network
+
+  # PHP webapp
+  php-app:
+    image: php
+    container_name: php-app
+    working_dir: /myapp
+    command: "php -S 0.0.0.0:8080"
+    volumes:
+      - ./php-app:/myapp:ro
+#    ports:
+#      - "8080:8080"
+    networks:
+      - app_network
+
+  # Simple-Client-App
+  simple-client-app:
+    image: registry.gitlab.com/asclepios-project/auth-examples/simple-client-app
+    container_name: simple-client-app
+    restart: on-failure
+    depends_on:
+      pdp-server:
+        condition: service_started
+      keycloak:
+        condition: service_started
+    environment:
+      AZ_CALL_DISABLED: 'true'
+#      AZ_SERVER_ENDPOINTS: https://pdp-server:7071/checkJsonAccessRequest
+#      AZ_SERVER_ACCESS_KEY: ${E_ABAC_SERVER_ACCESS_KEY}
+#      KEYCLOAK_ENABLED: 'false'
+#      KEYCLOAK_URL: ${E_KEYCLOAK_URL}
+#      KEYCLOAK_REALM: ${E_KEYCLOAK_REALM}
+#      KEYCLOAK_RESOURCE: ${E_KEYCLOAK_RESOURCE}
+#      KEYCLOAK_RESOURCE_SECRET: ${E_KEYCLOAK_RESOURCE_SECRET}
+#    ports:
+#      - "8080:8080"
+    networks:
+      - app_network
+
+  abac-zuul-proxy:
+    image: registry.gitlab.com/asclepios-project/abac-authorization/abac-zuul-proxy:3.0.3
+    container_name: abac-zuul-proxy
+    restart: on-failure
+    depends_on:
+      django-app:
+        condition: service_started
+      webapp:
+        condition: service_started
+      pdp-server:
+        condition: service_started
+      keycloak:
+        condition: service_started
+      django-rest:
+        condition: service_started
+    environment:
+      WEBAPP_BASE_URL: http://webapp:8080/
+      SIMPLECLIENTAPP_BASE_URL: http://simple-client-app:8080/
+      DJANGOAPP_BASE_URL: http://django-app:8000/
+      PHPAPP_BASE_URL: http://php-app:8080/
+      DJANGO_REST_BASE_URL: http://django-rest:8000/
+      #PDP_DISABLED: 'true'
+      PDP_ENDPOINTS: https://pdp-server:7071/checkJsonAccessRequest
+      PDP_ACCESS_KEY: ${E_ABAC_SERVER_ACCESS_KEY}
+#      PDP_TRUSTSTORE_FILE: ${E_PDP_TRUSTSTORE_FILE:-config/truststore-client.p12}
+#      PDP_TRUSTSTORE_TYPE: ${E_PDP_TRUSTSTORE_TYPE:-PKCS12}
+#      PDP_TRUSTSTORE_PASSWORD: ${E_PDP_TRUSTSTORE_PASSWORD:-asclepios}
+      PDP_TRUSTSTORE_FILE: /abac-proxy/certs/common-truststore.p12
+      PDP_TRUSTSTORE_TYPE: PKCS12
+      PDP_TRUSTSTORE_PASSWORD: ${E_COMMON_TRUSTSTORE_PASSWORD}
+      PDP_JWT_SECRET: ${E_PDP_JWT_SECRET:-asclepios}
+      PDP_LOAD_BALANCE_METHOD: ORDER
+      PDP_RETRY_COUNT: 1
+      KEYCLOAK_ENABLED: 'true'
+      KEYCLOAK_URL: ${E_KEYCLOAK_URL}
+      KEYCLOAK_REALM: ${E_KEYCLOAK_REALM}
+      KEYCLOAK_RESOURCE: ${E_KEYCLOAK_RESOURCE}
+      KEYCLOAK_RESOURCE_SECRET: ${E_KEYCLOAK_RESOURCE_SECRET}
+    ports:
+      - 80:80
+    volumes:
+      - ./zuul-proxy:/abac-proxy/config
+      - certs-common:/abac-proxy/certs
+    networks:
+      - app_network
+
+volumes:
+  certs-common:
+  certs-pdp-server:
+  certs-ample-editor:
+  kc_conf:
+#    driver_opts:
+#      type: none
+#      device: ./conf
+#      o: bind
+  kc_mysql_data:
+  abac_conf:
+  abac_policies:
+  abac_logs:
+  ample_conf:
+  ample_DB:
+  ample_logs:
+
+networks:
+  app_network:

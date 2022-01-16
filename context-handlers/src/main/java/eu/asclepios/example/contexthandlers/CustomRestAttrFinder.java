@@ -271,7 +271,7 @@ public class CustomRestAttrFinder extends BaseAttributeFinderModule {
         // Check if attribute is 'starter-id'
         if (attributeMatches(
                 PolicyConstants.STRING_DATA_TYPE, attributeType,
-                STARTER_ID, attributeId,
+                STARTER_ID_ATTRIBUTE, attributeId,
                 SND_CATEGORY, category))
         {
             log.debug("--------    Looking for STARTER_ID");
@@ -288,18 +288,17 @@ public class CustomRestAttrFinder extends BaseAttributeFinderModule {
         // Check if attribute is 'user-id'
         if (attributeMatches(
                 PolicyConstants.STRING_DATA_TYPE, attributeType,
-                USER_ID, attributeId,
+                USER_ID_ATTRIBUTE, attributeId,
                 SND_CATEGORY, category))
         {
-            log.debug("--------    Looking for USER_ID");
-            Map map = callRestProvider(issuer, context);
-            Object valueObj = map.get("user_id");
-            log.debug("--------    Value for USER_ID: {}", valueObj);
-            if (valueObj!=null) {
-                String value = valueObj.toString();                
-                return createStringResult(value);
+            // Get team-id
+            String userID = getUserTeamID(issuer, context);
+            log.warn("--------    Found user id: {}", userID);
+            if (StringUtils.isBlank(userID)) {
+                return createEmptyResult(STRING_TYPE_URI);
             }
-            return createEmptyResult(STRING_TYPE_URI);
+
+            return createStringResult(userID);
         }
 
 
@@ -320,6 +319,15 @@ public class CustomRestAttrFinder extends BaseAttributeFinderModule {
         }
         log.debug("--------    getKeycloakCustomClaim: Found '{}' Keycloak Custom Claim: {}", customClaimUri, valueStr);
         return valueStr;
+    }
+
+    private String getUserID(String issuer, EvaluationCtx context) {
+        // Get user attribute 'ambulance-crew-id' from Keycloak data provided in XACML request
+        String userID = getKeycloakCustomClaim(KC_USER_ID_ATTRIBUTE_URI, issuer, context);
+        if (StringUtils.isBlank(userID)) return null;
+
+        log.warn("--------    getUserID: return: {}", userID);
+        return userID.trim();
     }
 
     private String getUserTeamID(String issuer, EvaluationCtx context) {
@@ -380,3 +388,4 @@ public class CustomRestAttrFinder extends BaseAttributeFinderModule {
         }
     }
 }
+
