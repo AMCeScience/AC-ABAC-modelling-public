@@ -18,7 +18,6 @@ cat scenario15-logs.txt | grep "e.a.a.abac.server.PdpServerController    : Durat
 
 
 #### second step
-
 cat scenario1-times.txt | awk '{ print $11 } { print $12 }' > s1-times.txt
 cat scenario2-times.txt | awk '{ print $11 } { print $12 }' > s2-times.txt
 cat scenario3-times.txt | awk '{ print $11 } { print $12 }' > s3-times.txt
