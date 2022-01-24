@@ -8,6 +8,10 @@ from matplotlib.backends.backend_pdf import PdfPages
 #from scipy import stats
 from matplotlib.patches import Polygon
 import Statistics as stats
+from matplotlib.transforms import Transform
+from matplotlib.ticker import (
+    AutoLocator, AutoMinorLocator)
+
 
 
 
@@ -193,42 +197,54 @@ errread = [err_s1_evaluation, err_s2_evaluation]
 errupdate = [err_s3_evaluation, err_s4_evaluation]
 
 x =[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-labels= ['6','15','15','15','15','16']
-plt.rc('xtick', labelsize=10) 
-plt.rc('ytick', labelsize=10)
+labels= ['3','6','6','7','9','11','14', '15','15','15','15','15','15','16','16']
+plt.rc('xtick', labelsize=11) 
+plt.rc('ytick', labelsize=11)
 
 fig, ax = plt.subplots()
+ax0 = ax.twiny()
+#kwargs = dict(capsize=2, elinewidth=1.5, linewidth=1, ms=12
+ax.scatter([2, 9, 10, 11, 12, 14], [5,5,5,5,5,5], marker='v', color= 'g', label='Permit') 
+ax.scatter([1, 3, 4, 5, 6, 7, 8, 13, 15],[5,5,5,5,5,5,5,5,5],marker='x', color= 'r', label='Deny') 
+ax.bar([11], Mean_s1_evaluation, color='dimgray' , yerr= err_s1_evaluation , label='Read')#15
+ax.bar([12], Mean_s2_evaluation, color='dimgray' , yerr= err_s2_evaluation )#15
+ax.bar([10], Mean_s3_evaluation, color='darkgray' ,yerr= err_s3_evaluation , label='Update')#15
+ax.bar([9], Mean_s4_evaluation, color='darkgray'  ,yerr= err_s4_evaluation )#15
+ax.bar([1], Mean_s5_evaluation, color='lightgrey' ,yerr= err_s5_evaluation , label='Read/update')#3
+ax.bar([4], Mean_s6_evaluation, color='lightgrey'  ,yerr= err_s6_evaluation )#7
+ax.bar([5], Mean_s7_evaluation, color='lightgrey' ,yerr= err_s7_evaluation )#11
+ax.bar([6], Mean_s8_evaluation, color='lightgrey' ,yerr= err_s8_evaluation )#9
+ax.bar([13], Mean_s9_evaluation, color='dimgray' , yerr= err_s9_evaluation )#15
+ax.bar([7], Mean_s10_evaluation, color='darkgray' ,yerr= err_s10_evaluation )#15
+ax.bar([8], Mean_s11_evaluation, color='darkgray' ,yerr= err_s11_evaluation )#15
+ax.bar([2], Mean_s12_evaluation, color='whitesmoke',hatch='\\\\',yerr=  err_s13_evaluation , label='Start ES')#5
+ax.bar([3], Mean_s13_evaluation, color= 'whitesmoke' ,hatch='\\\\',yerr=  err_s13_evaluation )#5
+ax.bar([14], Mean_s14_evaluation, color= 'whitesmoke', hatch='//',yerr= err_s14_evaluation , label='End ES')#16
+ax.bar([15], Mean_s15_evaluation, color= 'whitesmoke',hatch='//', yerr= err_s15_evaluation)#16
+ax0.scatter([2, 9, 10, 11, 12, 14], [7,7,7,7,7,7], s= 100 ,marker='v', color= 'g', label='Permit') 
+ax0.scatter([1, 3, 4, 5, 6, 7, 8, 13, 15],[7,7,7,7,7,7,7,7,7], s=150, marker='x', color= 'r', label='Deny') 
+ax0.set_ylim([0, 240])
+#Plot invisible bar graph but have the legends specified
 
-#kwargs = dict(capsize=2, elinewidth=1.5, linewidth=1, ms=12)
+#ax.bar([2, 9, 10, 11, 12, 14], [Mean_s12_evaluation,Mean_s4_evaluation,Mean_s3_evaluation,Mean_s1_evaluation,Mean_s2_evaluation,Mean_s14_evaluation], color='None', hatch='//', edgecolor='olivedrab',label='Permit') 
+#ax.bar([1, 3, 4, 5, 6, 7, 8, 13, 15], [Mean_s5_evaluation, Mean_s13_evaluation,Mean_s6_evaluation, Mean_s7_evaluation,Mean_s8_evaluation, Mean_s10_evaluation,Mean_s11_evaluation, Mean_s9_evaluation,Mean_s15_evaluation], color='None', hatch='-', edgecolor='orangered',label='Deny') 
 
 
-ax.bar([15], Mean_s1_evaluation, yerr= err_s1_evaluation , label='S1')
-ax.bar([14], Mean_s2_evaluation, yerr= err_s2_evaluation , label='S2')
-ax.bar([9], Mean_s3_evaluation, yerr= err_s3_evaluation , label='S3')
-ax.bar([10], Mean_s4_evaluation, yerr= err_s4_evaluation , label='S4')
-ax.bar([3], Mean_s5_evaluation, yerr= err_s5_evaluation , label='S5')
-ax.bar([4], Mean_s6_evaluation, yerr= err_s6_evaluation , label='S6')
-ax.bar([5], Mean_s7_evaluation, yerr= err_s7_evaluation , label='S7')
-ax.bar([7], Mean_s8_evaluation, yerr= err_s8_evaluation , label='S8')
-ax.bar([13], Mean_s9_evaluation, yerr= err_s9_evaluation , label='S9')
-ax.bar([6], Mean_s10_evaluation, yerr= err_s10_evaluation , label='S10')
-ax.bar([8], Mean_s11_evaluation, yerr= err_s11_evaluation , label='S11')
-ax.bar([1], Mean_s12_evaluation, yerr=  err_s12_evaluation , label='S12')
-ax.bar([2], Mean_s13_evaluation, yerr=  err_s13_evaluation ,label='S13')
-ax.bar([11], Mean_s14_evaluation, yerr= err_s14_evaluation , label='S14')
-ax.bar([12], Mean_s15_evaluation, yerr= err_s15_evaluation , label='S15')
+#ax.plot([],[3, 9, 10, 11, 12, 14], [Mean_s12_evaluation,Mean_s4_evaluation,Mean_s3_evaluation,Mean_s1_evaluation,Mean_s2_evaluation,Mean_s14_evaluation], color='None', edgecolor='g',label='Permit') 
+#ax.bar([1, 2, 4, 5, 6, 7, 8, 13, 15], [Mean_s5_evaluation, Mean_s13_evaluation,Mean_s6_evaluation, Mean_s7_evaluation,Mean_s8_evaluation, Mean_s10_evaluation,Mean_s11_evaluation, Mean_s9_evaluation,Mean_s15_evaluation], color='None', edgecolor='r',label='Deny') 
 
-#ax.bar([5,6,7,8,9,10,11,13,15], Denial, yerr=errDenial,color='orangered', label='Deny')
-#ax.bar(x, Av_Policy, color='orange', label='Policy evaluation')
+print(Mean_s15_evaluation)
 
-#ax.bar([5,6,7,8,9,10,11,13,15], D_Policy, color='orangered', ecolor='orange', label='Denial' )
-#ax.bar(x, AvTotal, 35, yerr=errTotal, color='grey', label='Total')
-ax.legend(loc='best', frameon=True, fontsize=10)
-ax.set_xlabel('Number of contextual attributes', fontsize=12)
-ax.set_ylabel('Time (ms)', fontsize=12)
+ax.legend()
+ax.legend(loc='best', frameon=True, fontsize=11)
+ax.set_xlabel('Number of contextual attributes evaluated', fontsize=14)
+ax.set_ylabel('Time (ms)', fontsize=14)
 ax.set_xticks(x)
 ax.set_xticklabels(labels)
-#ax.set_xticks('S1', 'S2','S3','S4','S5','S6','S7','S8','S9','S10','S11','S12','S13','S14','S15')
+ax0.set_xlim(ax.get_xlim())
+ax0.set_xticks(x)
+ax0.set_xticklabels(['S5','S12','S13','S6','S7','S8','S10','S11','S4','S3','S1','S2','S9','S14','S15'], fontsize=11)
+ax0.set_xlabel('Scenarios', fontsize=14)
 plotfile = 'attributes.pdf'
 pp = PdfPages(plotfile)
 pp.savefig()

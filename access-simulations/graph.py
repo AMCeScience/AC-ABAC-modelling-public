@@ -170,7 +170,7 @@ Permit=[Mean_s1_total, Mean_s2_total, Mean_s3_total, Mean_s4_total,Mean_s12_tota
 Denial=[Mean_s5_total, Mean_s6_total, Mean_s7_total, Mean_s8_total, Mean_s9_total,Mean_s10_total,Mean_s11_total, Mean_s13_total, Mean_s15_total]
 
 P_Policy= [Mean_s1_evaluation, Mean_s2_evaluation, Mean_s3_evaluation, Mean_s4_evaluation, Mean_s12_evaluation,Mean_s14_evaluation]
-D_Policy= [Mean_s5_evaluation, Mean_s6_evaluation, Mean_s7_evaluation, Mean_s8_evaluation, Mean_s9_evaluation,Mean_s10_evaluation,Mean_s11_evaluation,Mean_s13_evaluation,Mean_s15_evaluation]
+D_Policy= [Mean_s5_evaluation, Mean_s6_evaluation, Mean_s7_evaluation, Mean_s8_evaluation, Mean_s9_evaluation, Mean_s10_evaluation,Mean_s11_evaluation,Mean_s13_evaluation,Mean_s15_evaluation]
 
 err_Policy =[err_s1_evaluation, err_s2_evaluation, err_s3_evaluation, err_s4_evaluation, err_s5_evaluation, err_s6_evaluation, err_s7_evaluation, err_s8_evaluation, err_s9_evaluation, err_s10_evaluation, err_s11_evaluation, err_s12_evaluation, err_s13_evaluation, err_s14_evaluation, err_s15_evaluation]
 
@@ -180,33 +180,32 @@ errPermit = [err_s1_total, err_s2_total, err_s3_total, err_s4_total,err_s12_tota
 errDenial = [ err_s5_total, err_s6_total, err_s7_total, err_s8_total, err_s9_total, err_s10_total, err_s11_total, err_s13_total, err_s15_total]
 
 
-print(Mean_s2_total)
-print(Mean_s2_evaluation)
-print(err_s2_total)
-print(err_s2_evaluation)
+print(Mean_s1_total)
+print(Mean_s3_total)
 
 
 x =[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
 labels= ['S1', 'S2','S3','S4','S5','S6','S7','S8','S9','S10','S11','S12','S13','S14','S15']
-plt.rc('xtick', labelsize=10) 
-plt.rc('ytick', labelsize=10)
+plt.rc('xtick', labelsize=11) 
+plt.rc('ytick', labelsize=11)
 
 fig, ax = plt.subplots()
 
 #kwargs = dict(capsize=2, elinewidth=1.5, linewidth=1, ms=12)
 ax.bar([1,2,3,4,12,14], Permit, yerr=errPermit , color='olivedrab',label='Permit')
 ax.bar([5,6,7,8,9,10,11,13,15], Denial, yerr=errDenial,color='orangered', label='Deny')
-ax.bar(x, Av_Policy, color='orange', label='Policy evaluation')
-
+ax.bar(x, Av_Policy, color='silver', label='Policy evaluation')
+#print(Mean_s15_total)
 #ax.bar([5,6,7,8,9,10,11,13,15], D_Policy, color='orangered', ecolor='orange', label='Denial' )
 #ax.bar(x, AvTotal, 35, yerr=errTotal, color='grey', label='Total')
-ax.legend(loc='best', frameon=True, fontsize=10)
-ax.set_xlabel('Scenarios', fontsize=12)
-ax.set_ylabel('Time (ms)', fontsize=12)
+ax.set_ylim([0, 240])
+ax.legend(loc=2, frameon=True, fontsize=11)
+ax.set_xlabel('Scenarios', fontsize=14)
+ax.set_ylabel('Time (ms)', fontsize=14)
 ax.set_xticks(x)
 ax.set_xticklabels(labels)
 #ax.set_xticks('S1', 'S2','S3','S4','S5','S6','S7','S8','S9','S10','S11','S12','S13','S14','S15')
-plotfile = 'attributes.pdf'
+plotfile = 'performance.pdf'
 pp = PdfPages(plotfile)
 pp.savefig()
 pp.close()
