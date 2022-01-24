@@ -61,6 +61,7 @@ public class CustomRestAttrFinder extends BaseAttributeFinderModule {
     private final static String EMERGENCY_ACTIVE_ATTRIBUTE = "emergency-active";
     private final static String STARTER_ID_ATTRIBUTE = "starter-id";
     private final static String USER_ID_ATTRIBUTE = "user-id";
+    private final static String TEAM_TAG_ATTRIBUTE = "team-tag";    
 
 
     // Misc. variables
@@ -301,6 +302,22 @@ public class CustomRestAttrFinder extends BaseAttributeFinderModule {
             return createStringResult(userID);
         }
 
+        // Check if attribute is 'team-tag'
+        if (attributeMatches(
+                PolicyConstants.STRING_DATA_TYPE, attributeType,
+                TEAM_TAG_ATTRIBUTE, attributeId,
+                SND_CATEGORY, category))
+        {
+            log.debug("--------    Looking for TEAM_TAG");
+            Map map = callRestProvider(issuer, context);
+            Object valueObj = map.get("team_tag");
+            log.debug("--------    Value for TEAM_TAG: {}", valueObj);
+            if (valueObj!=null) {
+                String value = valueObj.toString();                
+                return createStringResult(value);
+            }
+            return createEmptyResult(STRING_TYPE_URI);
+        }     
 
 
 

@@ -134,6 +134,7 @@ def get_infov2(request):
         try:
             team = Care_Team_Participants.objects.get(participant=user)
             team = team.team
+            response["team_tag"] = team.tag
         except:
             team = None
 
